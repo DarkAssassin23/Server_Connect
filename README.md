@@ -43,7 +43,7 @@ This will display the follwing man page style menu
 Server Connect interface, allows you to easily connect to and manage all your 
 ssh connecitons
 
-	[name] 		name of one of your connections your trying to
+	[name] 		Name of one of your connections your trying to
 			connect to
 
 	-h,--help	Brings up list of commands
@@ -60,7 +60,7 @@ ssh connecitons
 			of that connection
 			Ex. connect -d [name]
 
-	-u,--update 	updates a current connection based on the name 
+	-u,--update 	Updates a current connection based on the name 
 			and new user and domain/ip
 			Ex. connect -u [name] [user]@[domain]
 ```

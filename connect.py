@@ -29,7 +29,7 @@ def saveConnections():
 def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
-    print("\t[name] \t\tname of one of your connections your trying to\n\t\t\t"+
+    print("\t[name] \t\tName of one of your connections your trying to\n\t\t\t"+
     "connect to\n")
     print("\t-h,--help\tBrings up list of commands")
     print("\t\t\tEx. connect -h\n")
@@ -41,7 +41,7 @@ def printHelp():
     print("\t-d,--delete \tDeletes a current connection based on the name "+
         "\n\t\t\tof that connection")
     print("\t\t\tEx. connect -d [name]\n")
-    print("\t-u,--update \tupdates a current connection based on the name "+
+    print("\t-u,--update \tUpdates a current connection based on the name "+
         "\n\t\t\tand new user and domain/ip")
     print("\t\t\tEx. connect -u [name] [user]@[domain]")
     print()
