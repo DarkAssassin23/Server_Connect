@@ -20,7 +20,7 @@ one.
 
 To add the alias type the following:
 
-	alias connect="./path/to/file/connect.py"
+    alias connect="python3 /path/to/file/connect.py"
 
 And add your path to the file.
 
