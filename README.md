@@ -29,7 +29,7 @@ And add your path to the file.
 Utilizing Server Connect
 ----------------------
 
-Once your alias is set up to get help on all of the commands and what they 
+Once your alias is set up, to get help on all of the commands and what they 
 do type 
 
 	connect -h
