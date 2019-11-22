@@ -27,19 +27,20 @@ def saveConnections():
 # Prints the help menu with all the commands
 # as well as what they do
 def printHelp():
-    print("Connect interface, allows you to easily connect to "+
-        "and manage all your ssh\nconnecitons\n")
-    print("\t[name] \t\tname of your connections your trying to connect to")
+    print("Server Connect interface, allows you to easily connect to "+
+        "and manage all your \nssh connecitons\n")
+    print("\t[name] \t\tname of one of your connections your trying to\n\t\t\t"+
+    "connect to\n")
     print("\t-h,--help\tBrings up list of commands")
-    print("\t\t\tEx. connect -h")
+    print("\t\t\tEx. connect -h\n")
     print("\t-v,--view\tView the list of all your connections")
-    print("\t\t\tEx. connect -v")
+    print("\t\t\tEx. connect -v\n")
     print("\t-a,--add \tAdds a new connection to your list of "+
         "current \n\t\t\tconnections")
-    print("\t\t\tEx. connect -a [name] [user]@[domain]")
+    print("\t\t\tEx. connect -a [name] [user]@[domain]\n")
     print("\t-d,--delete \tDeletes a current connection based on the name "+
         "\n\t\t\tof that connection")
-    print("\t\t\tEx. connect -d [name]")
+    print("\t\t\tEx. connect -d [name]\n")
     print("\t-u,--update \tupdates a current connection based on the name "+
         "\n\t\t\tand new user and domain/ip")
     print("\t\t\tEx. connect -u [name] [user]@[domain]")
@@ -75,7 +76,6 @@ def update(name, userAdomain):
     else:
         connections[name] = userAdomain
         print("Connection sucessfully added")
-    print(connections)
     saveConnections()
 
 # If the connection exists, it deletes it
@@ -96,8 +96,10 @@ loadConnections()
 if(len(sys.argv)==2):
     if(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         printHelp()
+        exit()
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
         viewConnections()
+        exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
         
