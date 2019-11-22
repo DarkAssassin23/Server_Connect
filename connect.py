@@ -22,7 +22,7 @@ def loadConnections():
 def saveConnections():
     with open(path+"/connections.txt","w") as file:
         for key,val in connections.items():
-            file.write(key+" "+val)
+            file.write(key+" "+val+"\n")
 
 # Prints the help menu with all the commands
 # as well as what they do
