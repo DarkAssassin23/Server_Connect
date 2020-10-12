@@ -1,6 +1,6 @@
 # Server Connect
 **Version:** 1.1<br />
-**Published Date:** 10/11/2020
+**Published Date:** 10/12/2020
 
 GENERAL USAGE NOTES
 ----------------------
