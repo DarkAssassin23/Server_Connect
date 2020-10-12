@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 1.0<br />
-**Published Date:** 11/22/2019
+**Version:** 1.1<br />
+**Published Date:** 10/11/2020
 
 GENERAL USAGE NOTES
 ----------------------
@@ -10,26 +10,21 @@ and access them anywhere on your system without having to use ssh-keygen
 
 ---------
 
-Setup
+Installation
 ----------
 
-In order to take full advantage of this software, you must first create an
-alias. If you have other aliases set up add this one to them. Otherwise
-in your home directory edit your .bashrc file. If you don't have one, make
-one.
-
-To add the alias type the following:
-
-    alias connect="python3 /path/to/file/connect.py"
-
-And add your path to the file.
+To install Server Connect run the install script
+```bash
+sudo ./install
+```
+Make sure you run install script as root otherwise it won't work
 
 ------------------------
 
 Utilizing Server Connect
 ----------------------
 
-Once your alias is set up, to get help on all of the commands and what they 
+Once the installation is complete, to get help on all of the commands and what they 
 do type 
 
 	connect -h
