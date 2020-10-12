@@ -4,7 +4,7 @@ import os, readline, sys
 connections = {}
 
 # Sets the directory of connect.py
-path = os.path.dirname(os.path.abspath(__file__))
+path = os.path.expanduser("~")+"/.ssh"
 
 # If the file exists, it reads in all the connections
 def loadConnections():
@@ -29,21 +29,23 @@ def saveConnections():
 def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
-    print("\t[name] \t\tName of one of your connections your trying to\n\t\t\t"+
+    print("\t[name] \t\t\tName of one of your connections your trying to\n\t\t\t\t"+
     "connect to\n")
-    print("\t-h,--help\tBrings up list of commands")
-    print("\t\t\tEx. connect -h\n")
-    print("\t-v,--view\tView the list of all your connections")
-    print("\t\t\tEx. connect -v\n")
-    print("\t-a,--add \tAdds a new connection to your list of "+
-        "current \n\t\t\tconnections")
-    print("\t\t\tEx. connect -a [name] [user]@[domain]\n")
-    print("\t-d,--delete \tDeletes a current connection based on the name "+
-        "\n\t\t\tof that connection")
-    print("\t\t\tEx. connect -d [name]\n")
-    print("\t-u,--update \tUpdates a current connection based on the name "+
-        "\n\t\t\tand new user and domain/ip")
-    print("\t\t\tEx. connect -u [name] [user]@[domain]")
+    print("\t-h,--help\t\tBrings up list of commands")
+    print("\t\t\t\tEx. connect -h\n")
+    print("\t-v,--view\t\tView the list of all your connections")
+    print("\t\t\t\tEx. connect -v\n")
+    print("\t-a,--add \t\tAdds a new connection to your list of "+
+        "current \n\t\t\t\tconnections")
+    print("\t\t\t\tEx. connect -a [name] [user]@[domain]\n")
+    print("\t-d,--delete \t\tDeletes a current connection based on the name "+
+        "\n\t\t\t\tof that connection")
+    print("\t\t\t\tEx. connect -d [name]\n")
+    print("\t-D,--delete-all \tDeletes all connections")
+    print("\t\t\t\tEx. connect -D\n")
+    print("\t-u,--update \t\tUpdates a current connection based on the name "+
+        "\n\t\t\t\tand new user and domain/ip")
+    print("\t\t\t\tEx. connect -u [name] [user]@[domain]")
     print()
     
 # Checks if there are any connections saved
@@ -81,10 +83,30 @@ def update(name, userAdomain):
 # If the connection exists, it deletes it
 def delete(name):
     if(name in connections):
-        del connections[name]
-        print("Connection deleted sucessfully")
+        validate = input("Are you sure you would like to delete the conneciton "+name+" (y/n)? ")
+        if(validate.lower()=="y" or validate.lower()=="yes"):
+            del connections[name]
+            print("Connection deleted sucessfully")
+        elif(validate.lower()=="n" or validate.lower()=="no"):
+            print("Connection was not deleted")
+        else:
+            print("Error: Invalid Entry, connections were not deleted")
     else:
         print("Error: that connection does not exist")
+
+# Deletes all connections
+def deleteAll():
+    if(not(os.path.isfile(path+"/connections.txt"))):
+        print("There are no connections to delete")
+    else:
+        validate = input("Are you sure you would like to delete all your connections (y/n)? ")
+        if(validate.lower()=="y" or validate.lower()=="yes"):
+            os.system("rm "+path+"/connections.txt")
+            print("Connections deleted")
+        elif(validate.lower()=="n" or validate.lower()=="no"):
+            print("Connections were not deleted")
+        else:
+            print("Error: Invalid Entry, connections were not deleted")
 
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>4):
@@ -99,6 +121,9 @@ if(len(sys.argv)==2):
         exit()
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
         viewConnections()
+        exit()
+    elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
+        deleteAll()
         exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
@@ -139,6 +164,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-a" or sys.argv[1]=="--add"):
         print("Error: no user and domain given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
         
 if(len(sys.argv)==4):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -157,6 +185,9 @@ if(len(sys.argv)==4):
         print("Error: too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
 else:
