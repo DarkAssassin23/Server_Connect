@@ -38,25 +38,28 @@ This will display the follwing man page style menu
 Server Connect interface, allows you to easily connect to and manage all your 
 ssh connecitons
 
-	[name] 		Name of one of your connections your trying to
-			connect to
+	[name] 			Name of one of your connections your trying to
+				connect to
 
-	-h,--help	Brings up list of commands
-			Ex. connect -h
+	-h,--help		Brings up list of commands
+				Ex. connect -h
 
-	-v,--view	View the list of all your connections
-			Ex. connect -v
+	-v,--view		View the list of all your connections
+				Ex. connect -v
 
-	-a,--add 	Adds a new connection to your list of current 
-			connections
-			Ex. connect -a [name] [user]@[domain]
+	-a,--add 		Adds a new connection to your list of current 
+				connections
+				Ex. connect -a [name] [user]@[domain]
 
-	-d,--delete 	Deletes a current connection based on the name 
-			of that connection
-			Ex. connect -d [name]
+	-d,--delete 		Deletes a current connection based on the name 
+				of that connection
+				Ex. connect -d [name]
+	
+	-D,--delete-all		Deletes all connections
+				Ex. connect -D
 
-	-u,--update 	Updates a current connection based on the name 
-			and new user and domain/ip
-			Ex. connect -u [name] [user]@[domain]
+	-u,--update 		Updates a current connection based on the name 
+				and new user and domain/ip
+				Ex. connect -u [name] [user]@[domain]
 ```
 This is a list of all the current supported comands and their functionality
