@@ -1,0 +1,24 @@
+#!/usr/bin/python3
+#######################################################################
+#                                                                     #
+# This is an the install script to install Server Connect manually to #
+# eliminate having to do it manually. It will set the path and alias  #
+# to the where ever you have the install script saved so make sure    #
+# you have it and  the connect.py script in the same directory        #
+#                                                                     #
+# This script also needs to be run as root                            #
+#                                                                     #
+#######################################################################
+
+import os
+
+# Check if user has root privileges and copies file to /usr/local/bin
+# then validates the file copied successfully 
+if(os.geteuid()==0):
+    os.system("cp connect.py /usr/local/bin/connect")
+    if(os.path.isfile("/usr/local/bin/connect")):
+        print("Install Complete")
+    else:
+        print("An error occured")
+else:
+    print("Error: You need root privileges to execute this script, try: sudo ./install")
