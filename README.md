@@ -13,7 +13,7 @@ System Requirenments
 ----------
 - Python 3
 - **Additional Requirements (Windows Users Only)**
-  - Windows 10 version 1803 or later
+  - Windows 10 version 1803 or newer
 ________
 
 Windows Installation
