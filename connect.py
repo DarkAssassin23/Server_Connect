@@ -30,7 +30,7 @@ def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
     print("\t[name] \t\t\tName of one of your connections your trying to\n\t\t\t\t"+
-    "connect to")
+        "connect to")
     print("\t\t\t\tEx. connect vpn_server\n")
     print("\t-h,--help\t\tBrings up list of commands")
     print("\t\t\t\tEx. connect -h\n")
@@ -50,7 +50,6 @@ def printHelp():
     print("\t--version \t\tShows what version of Server Connect you're "+
         "\n\t\t\t\trunning")
     print("\t\t\t\tEx. connect --version\n")
-    print()
     
 # Checks if there are any connections saved
 # if there are some it prints them out
@@ -177,6 +176,7 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="--version"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
+
 if(len(sys.argv)==4):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         update(sys.argv[2],sys.argv[3])
