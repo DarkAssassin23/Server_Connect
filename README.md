@@ -26,7 +26,19 @@ pip install --user pyreadline
 ```
 
 If you already have those installed, double click on the install.bat file to install.
-You will then be prompted with the following diologue
+You will then be prompted with the following dialogue
+```
+Which option would you like to do?
+1. Install for the first time
+2. Update/Re-Install
+>>
+```
+If you have never used the installer before go with option 1 so your environment variable can be updated.
+If you've already used the installer your enironment variable path will already be set up and you don't need to
+duplicate it so go with option 2.
+
+If you go with option 2 you are good to go and the new version will be installed with no need to reboot. If you went with option
+1, you will be greeted with the following dialogue
 ```bash
 Value Path exists, overwrite(Yes/No)?
 ```
