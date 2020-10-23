@@ -1,0 +1,1 @@
+@py "%systemdrive%%homepath%\.ssh\connect.py" %*

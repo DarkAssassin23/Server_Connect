@@ -6,18 +6,43 @@ GENERAL USAGE NOTES
 ----------------------
 - This software is equipped with a CLI to manage all your ssh connections
 and access them anywhere on your system without having to use ssh-keygen
-- Requires python version 3
 
 ---------
 
-Installation
+System Requirenments 
+----------
+- Python 3
+- **Additional Requirements (Windows Users Only)**
+  - Windows 10 version 1803 or later
+________
+
+Windows Installation
 ----------
 
-To install Server Connect run the install script
+Make sure you have python set up as an environment variable. Also make sure that the
+pyreadline package is installed. That can be done via the command line with the following command
 ```bash
-sudo ./install
+pip install --user pyreadline
 ```
-Make sure you run install script as root otherwise it won't work
+
+If you already have those installed, double click on the install.bat file to install.
+You will then be prompted with the following diologue
+```bash
+Value Path exists, overwrite(Yes/No)?
+```
+Enter 'yes'. This will update your environment path registry which will allow you to execute Server
+Connect from anywhere on the command line.
+
+The last step is to reboot your computer and you're good to go.
+______
+
+macOS/Linux Installation
+------------------------
+
+To install Server Connect on macOS/Linux run the install script
+```bash
+./install
+```
 
 ------------------------
 
