@@ -1,5 +1,5 @@
 # Server Connect
-**Version:** 1.1.1<br />
+**Version:** 1.2<br />
 **Published Date:** 10/23/2020
 
 GENERAL USAGE NOTES
@@ -86,5 +86,9 @@ ssh connecitons
 	-u,--update 		Updates a current connection based on the name 
 				and new user and domain/ip
 				Ex. connect -u [name] [user]@[domain]
+				
+	--version		Shows what version of Server Connect you're
+				running
+				Ex. connect --version	
 ```
 This is a list of all the current supported comands and their functionality
