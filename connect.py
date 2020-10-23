@@ -30,7 +30,8 @@ def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
     print("\t[name] \t\t\tName of one of your connections your trying to\n\t\t\t\t"+
-    "connect to\n")
+    "connect to")
+    print("\t\t\t\tEx. connect vpn_server\n")
     print("\t-h,--help\t\tBrings up list of commands")
     print("\t\t\t\tEx. connect -h\n")
     print("\t-v,--view\t\tView the list of all your connections")
@@ -45,7 +46,10 @@ def printHelp():
     print("\t\t\t\tEx. connect -D\n")
     print("\t-u,--update \t\tUpdates a current connection based on the name "+
         "\n\t\t\t\tand new user and domain/ip")
-    print("\t\t\t\tEx. connect -u [name] [user]@[domain]")
+    print("\t\t\t\tEx. connect -u [name] [user]@[domain]\n")
+    print("\t--version \t\tShows what version of Server Connect you're "+
+        "\n\t\t\t\trunning")
+    print("\t\t\t\tEx. connect --version\n")
     print()
     
 # Checks if there are any connections saved
@@ -125,6 +129,9 @@ if(len(sys.argv)==2):
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
         deleteAll()
         exit()
+    elif(sys.argv[1]=="--version"):
+        print("Server Connect version 1.2")
+        exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
         
@@ -167,7 +174,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
-        
+    elif(sys.argv[1]=="--version"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
 if(len(sys.argv)==4):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         update(sys.argv[2],sys.argv[3])
@@ -188,6 +197,9 @@ if(len(sys.argv)==4):
         print("Error: too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="--version"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
 else:
