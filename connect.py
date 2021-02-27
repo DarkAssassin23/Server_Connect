@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import os, readline, sys
 
+version = "1.2.1"
 connections = {}
 
 # Sets the directory of connect.py
@@ -19,9 +20,10 @@ def loadConnections():
         pass
 
 # Saves all the connections to connections.txt
+# sorted by the name of the connection
 def saveConnections():
     with open(path+"/connections.txt","w") as file:
-        for key,val in connections.items():
+        for key,val in sorted(connections.items()):
             file.write(key+" "+val+"\n")
 
 # Prints the help menu with all the commands
@@ -39,6 +41,8 @@ def printHelp():
     print("\t-a,--add \t\tAdds a new connection to your list of "+
         "current \n\t\t\t\tconnections")
     print("\t\t\t\tEx. connect -a [name] [user]@[domain]\n")
+    print("\t-r,--rename \t\tRenames a connection in your list")
+    print("\t\t\t\tEx. connect -r [currentName] [newName]\n")
     print("\t-d,--delete \t\tDeletes a current connection based on the name "+
         "\n\t\t\t\tof that connection")
     print("\t\t\t\tEx. connect -d [name]\n")
@@ -111,6 +115,20 @@ def deleteAll():
         else:
             print("Error: Invalid Entry, connections were not deleted")
 
+# If the connection exists, it renames it to the new name
+def rename(oldName, newName):
+    if(oldName in connections):
+        validate = input("Are you sure you would like to rename the conneciton "+oldName+" to "+newName+" (y/n)? ")
+        if(validate.lower()=="y" or validate.lower()=="yes"):
+            connections[newName] = connections.pop(oldName)
+            print("Connection renamed sucessfully")
+        elif(validate.lower()=="n" or validate.lower()=="no"):
+            print("Connection was not renamed")
+        else:
+            print("Error: Invalid Entry")
+    else:
+        print("Error: that connection does not exist")
+
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>4):
     print("Invalid number of arguments, type connect -h for help")
@@ -129,7 +147,7 @@ if(len(sys.argv)==2):
         deleteAll()
         exit()
     elif(sys.argv[1]=="--version"):
-        print("Server Connect version 1.2")
+        print("Server Connect version "+version)
         exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
@@ -149,6 +167,9 @@ if(len(sys.argv)==2):
         print("Error: no name or user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-a" or sys.argv[1]=="--add"):
+        print("Error: no name or user and domain given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
         print("Error: no name or user and domain given, type connect -h for help")
         exit()
         
@@ -173,6 +194,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
     elif(sys.argv[1]=="--version"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
@@ -184,6 +208,10 @@ if(len(sys.argv)==4):
         exit()
     elif(sys.argv[1]=="-a" or sys.argv[1]=="--add"):
         update(sys.argv[2],sys.argv[3])
+        saveConnections()
+        exit()
+    elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
+        rename(sys.argv[2],sys.argv[3])
         saveConnections()
         exit()
     

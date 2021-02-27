@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 1.2<br />
-**Published Date:** 10/23/2020
+**Version:** 1.2.1<br />
+**Published Date:** 2/27/2021
 
 GENERAL USAGE NOTES
 ----------------------
@@ -87,6 +87,9 @@ ssh connecitons
 	-a,--add 		Adds a new connection to your list of current 
 				connections
 				Ex. connect -a [name] [user]@[domain]
+
+	-r,--rename		Renames a connection in your list
+				Ex. connect -r [currentName] [newName]
 
 	-d,--delete 		Deletes a current connection based on the name 
 				of that connection
