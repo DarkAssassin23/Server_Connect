@@ -114,3 +114,11 @@ Thank you
 Thank you for downloading and using the software. 
 
 If you enjoy the software consider sending me a **Dogecoin tip:** D8V1jewXjei69L4kZdRHdr3xoxj5fe51UY
+
+OR
+
+Donate Via PayPal 
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=4E77F646ADUNU&currency_code=USD)
+
+I appreciate the support
