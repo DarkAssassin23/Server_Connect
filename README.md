@@ -113,4 +113,4 @@ Thank you
 -----
 Thank you for downloading and using the software. 
 
-If you enjoy the software concider sending me a **Dogecoin tip:** D8V1jewXjei69L4kZdRHdr3xoxj5fe51UY
+If you enjoy the software consider sending me a **Dogecoin tip:** D8V1jewXjei69L4kZdRHdr3xoxj5fe51UY
