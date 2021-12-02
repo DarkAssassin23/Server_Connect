@@ -1,1 +1,1 @@
-@py "%systemdrive%%homepath%\.ssh\connect.py" %*
+@py "%userprofile%\.ssh\connect.py" %*

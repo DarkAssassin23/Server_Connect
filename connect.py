@@ -1,5 +1,9 @@
 #!/usr/bin/python3
-import os, readline, sys
+import os, sys, platform
+if(platform.system() == "Windows"):
+    from pyreadline import Readline
+else:
+    import readline
 
 version = "1.2.1"
 connections = {}
