@@ -12,7 +12,7 @@ import os
 # file copied successfully also makes sure ~/.ssh/ 
 # folder exists so you don't run into errors later
 homeDirSSH = os.path.expanduser("~/.ssh")
-os.system("sudo rm -rf /usr/local/bin/connect")
+os.system("rm -rf /usr/local/bin/connect")
 os.system("rm "+homeDirSSH+"/connections.txt")
 if(not (os.path.isfile("/usr/local/bin/connect") and os.path.isfile(homeDirSSH+"/connections.txt"))):
     print("Server Connect uninstalled sucessfully")
