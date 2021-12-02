@@ -12,7 +12,8 @@ maintain a config file for it
 
 System Requirenments 
 ----------
-- Python 3
+- Python3
+- Pip3
 - **Additional Requirements (Windows Users Only)**
   - Windows 10 version 1803 or newer
 ________

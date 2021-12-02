@@ -8,11 +8,14 @@
 
 import os
 
+print("Making sure the necessary python packages are installed")
+os.system("pip3 install requests")
+
 # Copies file to /usr/local/bin then validates the 
 # file copied successfully also makes sure ~/.ssh/ 
 # folder exists so you don't run into errors later
 homeDirSSH = os.path.expanduser("~/.ssh")
-os.system("cp connect.py /usr/local/bin/connect")
+os.system("sudo cp connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
 if(not os.path.isdir(homeDirSSH)):
     os.system("mkdir \""+homeDirSSH+"\"")
 if(os.path.isfile("/usr/local/bin/connect")):
