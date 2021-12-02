@@ -3,7 +3,7 @@
 echo Making sure the necessary python packages are installed
 
 python -m pip install requests
-python -m pip install netifaces 
+python -m pip install pyreadline 
 
 echo.
 echo Installing Server Connect...

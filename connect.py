@@ -1,11 +1,12 @@
 #!/usr/bin/python3
 import os, sys, platform
+from requests import get
 if(platform.system() == "Windows"):
     from pyreadline import Readline
 else:
     import readline
 
-version = "1.2.1"
+version = "2.0"
 connections = {}
 
 # Sets the directory of connect.py
@@ -133,6 +134,25 @@ def rename(oldName, newName):
     else:
         print("Error: that connection does not exist")
 
+def upgrade():
+    globalVersion = get("https://darkassassinsinc.com/software/server-connect/version.txt").text
+    if(globalVersion>version):
+        response = input("There is a new version available: version "+globalVersion+"\nWould you like to update? (y/n) ")
+        if(response.lower()=="y" or response.lower()=="yes"):
+            try:
+                update = get("https://darkassassinsinc.com/software/server-connect/connect.py")
+                open(path+"/connect.py", 'wb').write(update.content)
+                if(platform.system() != "Windows"):
+                    os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
+                print("Update to version "+globalVersion+" was sucessful")
+            except:
+                print("Error: Update failed")
+
+        else:
+            print("Update not downloaded")
+    else:
+        print("You are up to date!")
+
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>4):
     print("Invalid number of arguments, type connect -h for help")
@@ -152,6 +172,9 @@ if(len(sys.argv)==2):
         exit()
     elif(sys.argv[1]=="--version"):
         print("Server Connect version "+version)
+        exit()
+    elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
+        upgrade()
         exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
@@ -204,6 +227,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="--version"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
 
 if(len(sys.argv)==4):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -232,6 +258,9 @@ if(len(sys.argv)==4):
         print("Error: too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
+        print("Error: too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: too many arguments given, type connect -h for help")
         exit()
 else:
