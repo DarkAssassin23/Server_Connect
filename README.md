@@ -1,11 +1,12 @@
 # Server Connect
-**Version:** 1.2.1<br />
-**Published Date:** 2/27/2021
+**Version:** 2.0<br />
+**Published Date:** 12/2/2021
 
 GENERAL USAGE NOTES
 ----------------------
-- This software is equipped with a CLI to manage all your ssh connections
-and access them anywhere on your system without having to use ssh-keygen
+- This software is equipped with a CLI to manage all your ssh connections for you
+and access them anywhere on your system without having to use ssh-keygen and needing to
+maintain a config file for it
 
 ---------
 
@@ -18,34 +19,22 @@ ________
 
 Windows Installation
 ----------
+Compared to previous versions, the Windows installation has been streamlined.
+Simply run the ```install.bat``` file. and you will be good to go.
 
-Make sure you have python set up as an environment variable. Also make sure that the
-pyreadline package is installed. That can be done via the command line with the following command
-```bash
-pip install --user pyreadline
-```
+One thing to note, while you can install the program without admin privileges, you will
+then have to either
 
-If you already have those installed, double click on the install.bat file to install.
-You will then be prompted with the following dialogue
-```
-Which option would you like to do?
-1. Install for the first time
-2. Update/Re-Install
->>
-```
-If you have never used the installer before go with option 1 so your environment variable can be updated.
-If you've already used the installer your enironment variable path will already be set up and you don't need to
-duplicate it so go with option 2.
+1. Log out and log back in
+2. Open 'Advanced System Settings' -> Environment Variables, then select 'OK' and 'OK' again
+3. Restart your device
 
-If you go with option 2 you are good to go and the new version will be installed with no need to reboot. If you went with option
-1, you will be greeted with the following dialogue
-```bash
-Value Path exists, overwrite(Yes/No)?
-```
-Enter 'yes'. This will update your environment path registry which will allow you to execute Server
-Connect from anywhere on the command line.
+In order for the registry environment variable to propogate through the OS.
 
-The last step is to reboot your computer and you're good to go.
+If you ran the ```install.bat``` file as an administrator, however, you are good to go.
+Just close out of any open command prompt windows (if applicable) for their environment 
+variables to reset.
+
 ______
 
 macOS/Linux Installation
@@ -57,6 +46,21 @@ To install Server Connect on macOS/Linux run the install script
 ```
 
 ------------------------
+
+Windows Uninstall
+----------
+To uninstall Server Connect on Windows run the ```uninstall.bat``` file as 
+Administrator. Otherwise, it will not work 
+
+______
+
+macOS/Linux Uninstall
+------------------------
+
+To uninstall Server Connect on macOS/Linux run the uninstall script
+```bash
+./uninstall
+```
 
 Utilizing Server Connect
 ----------------------
@@ -71,7 +75,7 @@ or
 	connect --help
 
 This will display the follwing man page style menu
-```bash
+```
 Server Connect interface, allows you to easily connect to and manage all your 
 ssh connecitons
 
@@ -108,17 +112,3 @@ ssh connecitons
 ```
 This is a list of all the current supported comands and their functionality
 ________
-
-Thank you
------
-Thank you for downloading and using the software. 
-
-If you enjoy the software consider sending me a **Dogecoin tip:** D8V1jewXjei69L4kZdRHdr3xoxj5fe51UY
-
-OR
-
-Donate Via PayPal 
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/donate?business=4E77F646ADUNU&currency_code=USD)
-
-I appreciate the support
