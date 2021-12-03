@@ -85,6 +85,11 @@ def printHelp():
         (whiteSpace*8, whiteSpace*12, whiteSpace*29))
     print("%sEx. connect --version\n" % (whiteSpace*29))
 
+    print("%s-scp%sAllows you to enter optional scp flags, in addition\n%sto your normal scp command utilzing the name of one\n%sof your connections" % 
+        (whiteSpace*8, whiteSpace*17, whiteSpace*29, whiteSpace*29))
+    print("%sEx. connect -scp \"Documents/data.txt nas:~/Data\"" % (whiteSpace*29))
+    print("%sEx. connect -scp \"-r\" \"Documents/Data/ nas:~/Data\"\n"  % (whiteSpace*29))
+
 # Checks if there are any connections saved
 # if there are some it prints them out
 # otherwise it tells the user there are none
