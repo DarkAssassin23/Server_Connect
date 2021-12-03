@@ -205,11 +205,13 @@ def scp(command):
         exit()
     try:
         command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection, connections[nameOfConnection][0])
+        additionalCommands = connections[nameOfConnection][1]
+        additionalCommands = additionalCommands.replace("-p","-P")
         scpCommand = ""
         if(indexLocationOfFiles==3):
-            scpCommand = "scp "+command[2]+" "+command[indexLocationOfFiles]
+            scpCommand = "scp "+command[2]+" "+additionalCommands+" "+command[indexLocationOfFiles]
         else:
-            scpCommand = "scp "+command[indexLocationOfFiles]
+            scpCommand = "scp "+additionalCommands+" "+command[indexLocationOfFiles]
         os.system(scpCommand)
     except:
         if(indexLocationOfFiles==3):
