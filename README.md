@@ -50,21 +50,6 @@ To install Server Connect on macOS/Linux run the install script
 
 ------------------------
 
-Windows Uninstall
-----------
-To uninstall Server Connect on Windows run the ```uninstall.bat``` file as 
-Administrator. Otherwise, it will not work 
-
-______
-
-macOS/Linux Uninstall
-------------------------
-
-To uninstall Server Connect on macOS/Linux run the uninstall script
-```bash
-./uninstall
-```
-
 Utilizing Server Connect
 ----------------------
 
@@ -115,3 +100,18 @@ ssh connecitons
 ```
 This is a list of all the current supported comands and their functionality
 ________
+
+Windows Uninstall
+----------
+To uninstall Server Connect on Windows run the ```uninstall.bat``` file as 
+Administrator.
+
+______
+
+macOS/Linux Uninstall
+------------------------
+
+To uninstall Server Connect on macOS/Linux run the uninstall script
+```bash
+./uninstall
+```
