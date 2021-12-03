@@ -20,7 +20,15 @@ def loadConnections():
             contents = f.readlines()
         for x in contents:
             temp = x.split()
-            connections[temp[0]] = [temp[1], temp[2]]
+            if(len(temp) == 2):
+                connections[temp[0]] = [temp[1], ""]
+            elif(len(temp) > 2):
+                additionalParams = ""
+                for x in range(2,len(temp)):
+                    additionalParams += temp[x] + " "
+                connections[temp[0]] = [temp[1], additionalParams]
+            else:
+                print("An error occured reading in your connection \""+temp[0]+"\". check your ~/.ssh/connections.txt file")
     except:
         pass
 
@@ -152,25 +160,65 @@ def rename(oldName, newName):
     else:
         print("Error: that connection does not exist")
 
+# Reaches out to check and see if there are any
+# new versions of Server Connect. If so, it will
+# prompt the user if they would like to update.
+# If they do, the new version will be downloaded and
+# installed
 def upgrade():
-    globalVersion = get("https://darkassassinsinc.com/software/server-connect/version.txt").text
-    if(globalVersion>version):
-        response = input("There is a new version available: version "+globalVersion+"\nWould you like to update? (y/n) ")
-        if(response.lower()=="y" or response.lower()=="yes"):
-            try:
-                update = get("https://darkassassinsinc.com/software/server-connect/connect.py")
-                open(path+"/connect.py", 'wb').write(update.content)
-                if(platform.system() != "Windows"):
-                    os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
-                print("Update to version "+globalVersion+" was sucessful")
-            except:
-                print("Error: Update failed")
+    try:
+        globalVersion = get("https://darkassassinsinc.com/software/server-connect/version.txt").text
+        if(globalVersion>version):
+            response = input("There is a new version available: version "+globalVersion+"\nWould you like to update? (y/n) ")
+            if(response.lower()=="y" or response.lower()=="yes"):
+                try:
+                    update = get("https://darkassassinsinc.com/software/server-connect/connect.py")
+                    open(path+"/connect.py", 'wb').write(update.content)
+                    if(platform.system() != "Windows"):
+                        os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
+                    print("Update to version "+globalVersion+" was sucessful")
+                except:
+                    print("Error: Update failed")
 
+            else:
+                print("Update not downloaded")
         else:
-            print("Update not downloaded")
-    else:
-        print("You are up to date!")
+            print("You are up to date!")
+    except:
+        print("Error: Unable to check for updates at this time...")
 
+# Takes the list of arguments as input and then
+# parses them to construct an scp command to copy files
+# it searches your arguments for the name of a connection
+# and if found replaces it, otherwise tells you it no connection
+# exists by that name
+def scp(command):
+    nameOfConnection = ""
+    indexLocationOfFiles = len(command)-1
+    fileLocations = command[indexLocationOfFiles].split()
+    if(":" in fileLocations[0]):
+        nameOfConnection = fileLocations[0][:fileLocations[0].find(":")]
+    elif(":" in fileLocations[1]):
+        nameOfConnection = fileLocations[1][:fileLocations[1].find(":")]
+    else:
+        print("Error: Invalid formating of server connection. It should look like [connection]:/path/to/file")
+        exit()
+    try:
+        command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection, connections[nameOfConnection][0])
+        scpCommand = ""
+        if(indexLocationOfFiles==3):
+            scpCommand = "scp "+command[2]+" "+command[indexLocationOfFiles]
+        else:
+            scpCommand = "scp "+command[indexLocationOfFiles]
+        os.system(scpCommand)
+    except:
+        if(indexLocationOfFiles==3):
+            print("Unable to connect to: \""+nameOfConnection+"\" in \"scp "+command[2]+" "+command[indexLocationOfFiles]+"\"\nMake sure it is in"+
+                    " the list of connections and try again")
+        else:
+            print("Unable to connect to: \""+nameOfConnection+"\" in \"scp "+command[indexLocationOfFiles]+"\"\nMake sure it is in"+
+                    " the list of connections and try again")
+        
 
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>5):
@@ -201,22 +249,26 @@ if(len(sys.argv)==2):
         try:
             os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1])
         except:
-            print("Unable to connect to: \""+sys.argv[1]+" "+connections[sys.argv[1]][1]+"\"\nmake sure it is in"+
+            print("Unable to connect to: \""+sys.argv[1]+"\"\nMake sure it is in"+
                   " the list of connections and try again")
         print("closing connection...")
         exit()
     
     elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-        print("Error: no name given, type connect -h for help")
+        print("Error: No name given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
-        print("Error: no name or user and domain given, type connect -h for help")
+        print("Error: No name or user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-a" or sys.argv[1]=="--add"):
-        print("Error: no name or user and domain given, type connect -h for help")
+        print("Error: No name or user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-        print("Error: no name or user and domain given, type connect -h for help")
+        print("Error: No name or user and domain given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-scp"):
+        print("Error: No arguments given. Your command should look like \"[optionalParams]\" \"file/to/send/ [name]:/path/on/server\" " +
+                "or \"[optionalParams]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
         
 if(len(sys.argv)==3):
@@ -224,41 +276,43 @@ if(len(sys.argv)==3):
         delete(sys.argv[2])
         saveConnections()
         exit()
-        
+    elif(sys.argv[1]=="-scp"):
+        scp(sys.argv)
+        exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
         
         try:
             os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
         except:
-            print("Unable to connect to: \""+sys.argv[1]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2]+"\nmake sure it is in"+
+            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
                   " the list of connections and try again")
         print("closing connection...")
         exit()
 
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
-        print("Error: no user and domain given, type connect -h for help")
+        print("Error: No user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-a" or sys.argv[1]=="--add"):
-        print("Error: no user and domain given, type connect -h for help")
+        print("Error: No user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
 
 if(len(sys.argv)==4):
@@ -274,24 +328,27 @@ if(len(sys.argv)==4):
         rename(sys.argv[2],sys.argv[3])
         saveConnections()
         exit()
+    elif(sys.argv[1]=="-scp"):
+        scp(sys.argv)
+        exit()
     
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
 
 if(len(sys.argv)==5):
@@ -305,25 +362,32 @@ if(len(sys.argv)==5):
         exit()
     
     elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-        print("Error: too many arguments given, type connect -h for help")
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-scp"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-scp"):
+        print("Error: Too many arguments given. Your command should look like \"[optionalParams]\" \"file/to/send/ [name]:/path/on/server\" " +
+                "or \"[optionalParams]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
 else:
     print("Error: unrecognized command, type connect -h for help")
