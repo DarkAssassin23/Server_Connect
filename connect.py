@@ -23,10 +23,10 @@ def loadConnections():
             if(len(temp) == 2):
                 connections[temp[0]] = [temp[1], ""]
             elif(len(temp) > 2):
-                additionalParams = ""
+                additionalFlags = ""
                 for x in range(2,len(temp)):
-                    additionalParams += temp[x] + " "
-                connections[temp[0]] = [temp[1], additionalParams]
+                    additionalFlags += temp[x] + " "
+                connections[temp[0]] = [temp[1], additionalFlags]
             else:
                 print("An error occured reading in your connection \""+temp[0]+"\". check your ~/.ssh/connections.txt file")
     except:
@@ -46,10 +46,10 @@ def printHelp():
         "and manage all your \nssh connecitons\n")
 
     whiteSpace = ' '
-    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sparams" % 
+    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags" % 
         (whiteSpace*8, whiteSpace*15, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
-    print("%sEx. connect vpn_server \"[SSHParams]\"\n" % (whiteSpace*29))
+    print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"\n" % (whiteSpace*29))
 
     print("%s-h,--help%sBrings up list of commands" % (whiteSpace*8, whiteSpace*12))
     print("%sEx. connect -h\n" % (whiteSpace*29))
@@ -57,10 +57,10 @@ def printHelp():
     print("%s-v,--view%sView the list of all your connections" % (whiteSpace*8, whiteSpace*12))
     print("%sEx. connect -v\n" % (whiteSpace*29))
 
-    print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections" % 
+    print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections and any ssh flags" % 
         (whiteSpace*8, whiteSpace*13, whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain]" % (whiteSpace*29))
-    print("%sEx. connect -a [name] [user]@[domain] \"[SSHParams]\"\n" % (whiteSpace*29))
+    print("%sEx. connect -a [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
     print("%s-r,--rename%sRenames a connection in your list" % (whiteSpace*8, whiteSpace*10))
     print("%sEx. connect -r [currentName] [newName]\n" % (whiteSpace*29))
@@ -72,10 +72,10 @@ def printHelp():
     print("%s-D,--delete-all%sDeletes all connections" % (whiteSpace*8, whiteSpace*6))
     print("%sEx. connect -D\n" % (whiteSpace*29))
 
-    print("%s-u,--update%sUpdates a current connection based on the name\n%sand new user and domain/ip" % 
+    print("%s-u,--update%sUpdates a current connection based on the name,\n%snew user and domain/ip, and ssh flags" % 
         (whiteSpace*8, whiteSpace*10, whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain]" % (whiteSpace*29))
-    print("%sEx. connect -u [name] [user]@[domain] \"[SSHParams]\"\n" % (whiteSpace*29))
+    print("%sEx. connect -u [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
     print("%s-U,--upgrade%sChecks to see if there is a newer version and\n%sand will automatically update for you" % 
         (whiteSpace*8, whiteSpace*9, whiteSpace*29))
@@ -98,7 +98,7 @@ def viewConnections():
         print("No saved connections")
         exit()
     for key,val in connections.items():
-        print("Name: "+key+", Username and domain/ip: "+val[0]+" Additional Params: "+val[1])
+        print("Name: "+key+", Username and domain/ip: "+val[0]+" Additional Flags: "+val[1])
 
 # Makes sure the username and domain combo
 # is formated correctly
@@ -110,16 +110,16 @@ def valid(userAdomain):
 # new connection if it doesn't already exist
 # or it updates the connection with additional
 # ssh parameters
-def update(name, userAdomain, additionalParams = ""):
+def update(name, userAdomain, additionalFlags = ""):
     if(not(valid(userAdomain))):
         print("Error: invalid user and domain\nmake sure to use the following"+
             " fromat: [user]@[domain]")
         exit()
     if(name in connections):
-        connections[name] = [userAdomain, additionalParams]
+        connections[name] = [userAdomain, additionalFlags]
         print("Connection sucessfully updated")
     else:
-        connections[name] = [userAdomain, additionalParams]
+        connections[name] = [userAdomain, additionalFlags]
         print("Connection sucessfully added")
     saveConnections()
 
@@ -274,8 +274,8 @@ if(len(sys.argv)==2):
         print("Error: No name or user and domain given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
-        print("Error: No arguments given. Your command should look like \"[optionalParams]\" \"file/to/send/ [name]:/path/on/server\" " +
-                "or \"[optionalParams]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
+        print("Error: No arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
+                "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
         
 if(len(sys.argv)==3):
@@ -393,8 +393,8 @@ if(len(sys.argv)==5):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
-        print("Error: Too many arguments given. Your command should look like \"[optionalParams]\" \"file/to/send/ [name]:/path/on/server\" " +
-                "or \"[optionalParams]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
+        print("Error: Too many arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
+                "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
 else:
     print("Error: unrecognized command, type connect -h for help")
