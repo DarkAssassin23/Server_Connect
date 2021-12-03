@@ -36,30 +36,44 @@ def saveConnections():
 def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
-    print("\t[name] \t\t\tName of one of your connections your trying to\n\t\t\t\t"+
-        "connect to")
-    print("\t\t\t\tEx. connect vpn_server\n")
-    print("\t-h,--help\t\tBrings up list of commands")
-    print("\t\t\t\tEx. connect -h\n")
-    print("\t-v,--view\t\tView the list of all your connections")
-    print("\t\t\t\tEx. connect -v\n")
-    print("\t-a,--add \t\tAdds a new connection to your list of "+
-        "current \n\t\t\t\tconnections")
-    print("\t\t\t\tEx. connect -a [name] [user]@[domain]\n")
-    print("\t-r,--rename \t\tRenames a connection in your list")
-    print("\t\t\t\tEx. connect -r [currentName] [newName]\n")
-    print("\t-d,--delete \t\tDeletes a current connection based on the name "+
-        "\n\t\t\t\tof that connection")
-    print("\t\t\t\tEx. connect -d [name]\n")
-    print("\t-D,--delete-all \tDeletes all connections")
-    print("\t\t\t\tEx. connect -D\n")
-    print("\t-u,--update \t\tUpdates a current connection based on the name "+
-        "\n\t\t\t\tand new user and domain/ip")
-    print("\t\t\t\tEx. connect -u [name] [user]@[domain]\n")
-    print("\t--version \t\tShows what version of Server Connect you're "+
-        "\n\t\t\t\trunning")
-    print("\t\t\t\tEx. connect --version\n")
-    
+
+    whiteSpace = ' '
+    print("%s[name]%sName of one of your connections your trying to\n%sconnect to" % 
+        (whiteSpace*8, whiteSpace*18, whiteSpace*32))
+    print("%sEx. connect vpn_server\n" % (whiteSpace*32))
+
+    print("%s-h,--help%sBrings up list of commands" % (whiteSpace*8, whiteSpace*15))
+    print("%sEx. connect -h\n" % (whiteSpace*32))
+
+    print("%s-v,--view%sView the list of all your connections" % (whiteSpace*8, whiteSpace*15))
+    print("%sEx. connect -v\n" % (whiteSpace*32))
+
+    print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections" % 
+        (whiteSpace*8, whiteSpace*16, whiteSpace*32))
+    print("%sEx. connect -a [name] [user]@[domain]\n\n" % (whiteSpace*32))
+
+    print("%s-r,--rename%sRenames a connection in your list" % (whiteSpace*8, whiteSpace*13))
+    print("%sEx. connect -r [currentName] [newName]\n" % (whiteSpace*32))
+
+    print("%s-d,--delete%sDeletes a current connection based on the name\n%sof that connection" % 
+        (whiteSpace*8, whiteSpace*13, whiteSpace*32))
+    print("%sEx. connect -d [name]\n" % (whiteSpace*32))
+
+    print("%s-D,--delete-all%sDeletes all connections" % (whiteSpace*8, whiteSpace*9))
+    print("%sEx. connect -D\n" % (whiteSpace*32))
+
+    print("%s-u,--update%sUpdates a current connection based on the name\n%sand new user and domain/ip" % 
+        (whiteSpace*8, whiteSpace*13, whiteSpace*32))
+    print("%sEx. connect -u [name] [user]@[domain]\n" % (whiteSpace*32))
+
+    print("%s-U,--upgrade%sChecks to see if there is a newer version and\n%sand will automatically update for you" % 
+        (whiteSpace*8, whiteSpace*12, whiteSpace*32))
+    print("%sEx. connect -U\n" % (whiteSpace*32))
+
+    print("%s--version%sShows what version of Server Connect you're\n%srunning" % 
+        (whiteSpace*8, whiteSpace*15, whiteSpace*32))
+    print("%sEx. connect --version\n" % (whiteSpace*32))
+
 # Checks if there are any connections saved
 # if there are some it prints them out
 # otherwise it tells the user there are none
