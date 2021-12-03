@@ -9,7 +9,7 @@
 import os
 
 print("Making sure the necessary python packages are installed")
-os.system("pip3 install requests")
+os.system("python3 -m pip install requests")
 
 # Copies file to /usr/local/bin then validates the 
 # file copied successfully also makes sure ~/.ssh/ 
