@@ -46,7 +46,7 @@ def printHelp():
         "and manage all your \nssh connecitons\n")
 
     whiteSpace = ' '
-    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags" % 
+    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
         (whiteSpace*8, whiteSpace*15, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
     print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"\n" % (whiteSpace*29))
@@ -57,7 +57,7 @@ def printHelp():
     print("%s-v,--view%sView the list of all your connections" % (whiteSpace*8, whiteSpace*12))
     print("%sEx. connect -v\n" % (whiteSpace*29))
 
-    print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections and any ssh flags" % 
+    print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections with any additional ssh flags" % 
         (whiteSpace*8, whiteSpace*13, whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
@@ -387,9 +387,6 @@ if(len(sys.argv)==5):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-        print("Error: Too many arguments given, type connect -h for help")
-        exit()
-    elif(sys.argv[1]=="-scp"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
