@@ -177,7 +177,7 @@ __________
 
 Windows Uninstall
 ----------
-To uninstall Server Connect on Windows run the ```uninstall.bat``` file as 
+To uninstall Server Connect on Windows run the `uninstall.bat` file as 
 Administrator.
 
 ______
