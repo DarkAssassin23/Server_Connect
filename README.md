@@ -1,6 +1,6 @@
 # Server Connect
 **Version:** 2.0<br />
-**Published Date:** 12/2/2021
+**Published Date:** 12/3/2021
 
 GENERAL USAGE NOTES
 ----------------------
@@ -74,7 +74,7 @@ ssh connecitons
 
 	[name] 			Name of one of your connections your trying to
 				connect to. Additionaly, you can append regular ssh
-                flags in quotes
+                		flags in quotes
 				Ex. connect vpn_server
 				Ex. connect vpn_server "-i ~/.ssh/id_rsa -p 2653"
 
@@ -100,23 +100,23 @@ ssh connecitons
 				Ex. connect -D
 
 	-u,--update 		Updates a current connection based on the name,
-                new user and domain/ip, and ssh flags
+                		new user and domain/ip, and ssh flags
 				Ex. connect -u [name] [user]@[domain]
 				Ex. connect -u [name] [user]@[domain] "[sshFlags]"
 	
-	-U,--upgrade        Checks to see if there is a newer version and
-                and will automatically update for you
-                Ex. connect -U
+	-U,--upgrade        	Checks to see if there is a newer version and
+                		and will automatically update for you
+                		Ex. connect -U
 				
 	--version		Shows what version of Server Connect you're
 				running
 				Ex. connect --version	
 
-    -scp            Allows you to enter optional scp flags, in addition
-                to your normal scp command utilzing the name of one
-                of your connections
-                Ex. connect -scp "Documents/data.txt nas:~/Data"
-                Ex. connect -scp "-r" "Documents/Data/ nas:~/Data"	
+    	-scp            	Allows you to enter optional scp flags, in addition
+                		to your normal scp command utilzing the name of one
+                		of your connections
+                		Ex. connect -scp "Documents/data.txt nas:~/Data"
+                		Ex. connect -scp "-r" "Documents/Data/ nas:~/Data"	
 ```
 This is a list of all the current supported comands and their functionality
 ________
