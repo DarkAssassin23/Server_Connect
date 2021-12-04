@@ -25,11 +25,12 @@ ________
 
 Windows Installation
 ----------
-Compared to previous versions, the Windows installation has been streamlined.
-Simply run the ```install.bat``` file. and you will be good to go.
+Compared to previous versions, As of version 2.0 the Windows installation has been 
+streamlined. Simply run the `install.bat` file. and you will be good to go.
 
-One thing to note, while you can install the program without admin privileges, you will
-then have to do on of the follwoing:
+One thing to note, can install the program perfectly fine without admin privileges, 
+however, it is not recommended since if you do not run the installer with admin 
+privileges you will then have to do one of the follwoing:
 
 1. Log out and log back in
 2. Open 'Advanced System Settings' -> Environment Variables, then select 'OK' and 'OK' again
@@ -37,9 +38,9 @@ then have to do on of the follwoing:
 
 Since you did run the installer as administrator, the registry environment variables were 
 not able to automatically propogate throughout the OS, which is why you need to do one of 
-the three options listed above inorder to trigger it.
+the three options listed above in order to trigger it.
 
-If you ran the ```install.bat``` file as an administrator, however, you are good to go.
+If you ran the `install.bat` file as an administrator, however, you are good to go.
 Just close out of any open command prompt windows (if applicable) for their environment 
 variables to reset.
 
