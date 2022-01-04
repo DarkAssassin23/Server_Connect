@@ -6,7 +6,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "2.0"
+version = "2.1"
 whiteSpace = ' '
 connections = {}
 
