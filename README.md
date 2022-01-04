@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 2.0<br />
-**Published Date:** 12/3/2021
+**Version:** 2.1<br />
+**Published Date:** 1/4/2022
 
 GENERAL USAGE NOTES
 ----------------------
