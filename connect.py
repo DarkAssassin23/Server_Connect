@@ -7,6 +7,7 @@ else:
     import readline
 
 version = "2.0"
+whiteSpace = ' '
 connections = {}
 
 # Sets the directory of connect.py
@@ -45,7 +46,6 @@ def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
         "and manage all your \nssh connecitons\n")
 
-    whiteSpace = ' '
     print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
         (whiteSpace*8, whiteSpace*15, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
@@ -98,7 +98,13 @@ def viewConnections():
         print("No saved connections")
         exit()
     for key,val in connections.items():
-        print("Name: "+key+", Username and domain/ip: "+val[0]+" Additional Flags: "+val[1])
+        print("Name: "+key)
+        print("%sUsername and domain/ip: %s" % (whiteSpace*4, val[0]))
+        if(val[1]==""):
+            print("%sAdditional Flags: N/A" % (whiteSpace*4))
+        else:
+            print("%sAdditional Flags: %s" % (whiteSpace*4, val[1]))
+        print()
 
 # Makes sure the username and domain combo
 # is formated correctly
