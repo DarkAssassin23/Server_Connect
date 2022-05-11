@@ -123,10 +123,10 @@ def update(name, userAdomain, additionalFlags = ""):
         exit()
     if(name in connections):
         connections[name] = [userAdomain, additionalFlags]
-        print("Connection sucessfully updated")
+        print("Connection successfully updated")
     else:
         connections[name] = [userAdomain, additionalFlags]
-        print("Connection sucessfully added")
+        print("Connection successfully added")
     saveConnections()
 
 # If the connection exists, it deletes it
@@ -135,7 +135,7 @@ def delete(name):
         validate = input("Are you sure you would like to delete the conneciton "+name+" (y/n)? ")
         if(validate.lower()=="y" or validate.lower()=="yes"):
             del connections[name]
-            print("Connection deleted sucessfully")
+            print("Connection deleted successfully")
         elif(validate.lower()=="n" or validate.lower()=="no"):
             print("Connection was not deleted")
         else:
@@ -163,7 +163,7 @@ def rename(oldName, newName):
         validate = input("Are you sure you would like to rename the conneciton "+oldName+" to "+newName+" (y/n)? ")
         if(validate.lower()=="y" or validate.lower()=="yes"):
             connections[newName] = connections.pop(oldName)
-            print("Connection renamed sucessfully")
+            print("Connection renamed successfully")
         elif(validate.lower()=="n" or validate.lower()=="no"):
             print("Connection was not renamed")
         else:
@@ -187,7 +187,7 @@ def upgrade():
                     open(path+"/connect.py", 'wb').write(update.content)
                     if(platform.system() != "Windows"):
                         os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
-                    print("Update to version "+globalVersion+" was sucessful")
+                    print("Update to version "+globalVersion+" was successful")
                 except:
                     print("Error: Update failed")
 
