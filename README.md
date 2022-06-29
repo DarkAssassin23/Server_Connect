@@ -108,7 +108,7 @@ ssh connecitons
 	-uu,--update-user       Updates a current connection's user based
                                 on the name
                                 Ex. connect -uu [name] [user]
-                                Ex. connect -uu webserver webadmin"
+                                Ex. connect -uu webserver webadmin
 
         -uf,--update-flags      Updates a current connection's ssh flags based
                                 on the name

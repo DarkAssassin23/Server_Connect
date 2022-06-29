@@ -81,7 +81,7 @@ def printHelp():
     print("%s-uu,--update-user%sUpdates a current connection\'s user based\n%son the name" % 
         (whiteSpace*4, whiteSpace*8, (whiteSpace*29)))
     print("%sEx. connect -uu [name] [user]" % (whiteSpace*29))
-    print("%sEx. connect -uu webserver webadmin\"\n" % (whiteSpace*29))
+    print("%sEx. connect -uu webserver webadmin\n" % (whiteSpace*29))
 
     print("%s-uf,--update-flags%sUpdates a current connection\'s ssh flags based\n%son the name" % 
         (whiteSpace*4, whiteSpace*7, whiteSpace*29))
