@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os, sys, platform
+from unittest import result
 from requests import get
 if(platform.system() == "Windows"):
     from pyreadline import Readline
@@ -47,46 +48,61 @@ def printHelp():
         "and manage all your \nssh connecitons\n")
 
     print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
-        (whiteSpace*8, whiteSpace*15, whiteSpace*29, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*19, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
     print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"\n" % (whiteSpace*29))
 
-    print("%s-h,--help%sBrings up list of commands" % (whiteSpace*8, whiteSpace*12))
+    print("%s-h,--help%sBrings up list of commands" % (whiteSpace*4, whiteSpace*16))
     print("%sEx. connect -h\n" % (whiteSpace*29))
 
-    print("%s-v,--view%sView the list of all your connections" % (whiteSpace*8, whiteSpace*12))
+    print("%s-v,--view%sView the list of all your connections" % (whiteSpace*4, whiteSpace*16))
     print("%sEx. connect -v\n" % (whiteSpace*29))
 
     print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections with any additional ssh flags" % 
-        (whiteSpace*8, whiteSpace*13, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*17, whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
-    print("%s-r,--rename%sRenames a connection in your list" % (whiteSpace*8, whiteSpace*10))
+    print("%s-r,--rename%sRenames a connection in your list" % (whiteSpace*4, whiteSpace*14))
     print("%sEx. connect -r [currentName] [newName]\n" % (whiteSpace*29))
 
     print("%s-d,--delete%sDeletes a current connection based on the name\n%sof that connection" % 
-        (whiteSpace*8, whiteSpace*10, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*14, whiteSpace*29))
     print("%sEx. connect -d [name]\n" % (whiteSpace*29))
 
-    print("%s-D,--delete-all%sDeletes all connections" % (whiteSpace*8, whiteSpace*6))
+    print("%s-D,--delete-all%sDeletes all connections" % (whiteSpace*4, whiteSpace*10))
     print("%sEx. connect -D\n" % (whiteSpace*29))
 
     print("%s-u,--update%sUpdates a current connection based on the name,\n%snew user and domain/ip, and ssh flags" % 
-        (whiteSpace*8, whiteSpace*10, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*14, whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
+    print("%s-uu,--update-user%sUpdates a current connection\'s user based\n%son the name" % 
+        (whiteSpace*4, whiteSpace*8, (whiteSpace*29)))
+    print("%sEx. connect -uu [name] [user]" % (whiteSpace*29))
+    print("%sEx. connect -uu webserver webadmin\"\n" % (whiteSpace*29))
+
+    print("%s-uf,--update-flags%sUpdates a current connection\'s ssh flags based\n%son the name" % 
+        (whiteSpace*4, whiteSpace*7, whiteSpace*29))
+    print("%sEx. connect -uf [name] \"[ssh flags]\"" % (whiteSpace*29))
+    print("%sEx. connect -uf nas \"-p 34521 -i ~/.ssh/id_rsa\"\n" % (whiteSpace*29))
+
+    print("%s-ui,--update-ipdomain%sUpdates a current connection\'s domain/ip based\n%son the name" % 
+        (whiteSpace*4, whiteSpace*4, whiteSpace*29))
+    print("%sEx. connect -ui [name] [ip/domain]" % (whiteSpace*29))
+    print("%sEx. connect -ui vpn 192.164.1.146\n" % (whiteSpace*29))
+
     print("%s-U,--upgrade%sChecks to see if there is a newer version and\n%sand will automatically update for you" % 
-        (whiteSpace*8, whiteSpace*9, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*13, whiteSpace*29))
     print("%sEx. connect -U\n" % (whiteSpace*29))
 
     print("%s--version%sShows what version of Server Connect you're\n%srunning" % 
-        (whiteSpace*8, whiteSpace*12, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*16, whiteSpace*29))
     print("%sEx. connect --version\n" % (whiteSpace*29))
 
     print("%s-scp%sAllows you to enter optional scp flags, in addition\n%sto your normal scp command utilzing the name of one\n%sof your connections" % 
-        (whiteSpace*8, whiteSpace*17, whiteSpace*29, whiteSpace*29))
+        (whiteSpace*4, whiteSpace*21, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect -scp \"Documents/data.txt nas:~/Data\"" % (whiteSpace*29))
     print("%sEx. connect -scp \"-r\" \"Documents/Data/ nas:~/Data\"\n"  % (whiteSpace*29))
 
@@ -119,7 +135,7 @@ def valid(userAdomain):
 def update(name, userAdomain, additionalFlags = ""):
     if(not(valid(userAdomain))):
         print("Error: invalid user and domain\nmake sure to use the following"+
-            " fromat: [user]@[domain]")
+            " format: [user]@[domain]")
         exit()
     if(name in connections):
         connections[name] = [userAdomain, additionalFlags]
@@ -231,7 +247,27 @@ def scp(command):
         else:
             print("Unable to connect to: \""+nameOfConnection+"\" in \"scp "+command[indexLocationOfFiles]+"\"\nMake sure it is in"+
                     " the list of connections and try again")
-        
+
+# Given the name of the connection and a given flag
+# it updates either the connects user, domain/ip, or
+# ssh parameters, depending on which flag was passed
+def updatePartial(name, flag, sectionToUpdate):
+    if(name in connections):
+        if(flag=="-uf"):
+            connections[name][1] = sectionToUpdate
+        else:
+            userADomain = connections[name][0].split("@")
+            if(flag=="-uu"):
+                userADomain[0] = sectionToUpdate
+            else:
+                userADomain[1] = sectionToUpdate
+            result = userADomain[0]+"@"+userADomain[1]
+            connections[name][0] = result
+
+        saveConnections()
+        print("Connection successfully updated")
+    else:
+        print("Error: That connection name does not exist in your list of connections")
 
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>5):
@@ -283,6 +319,12 @@ if(len(sys.argv)==2):
         print("Error: No arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
                 "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
+        print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
+        print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
+        exit()
         
 if(len(sys.argv)==3):
     if(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
@@ -327,6 +369,12 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
+        print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
+        print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
+        exit()
 
 if(len(sys.argv)==4):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -343,6 +391,15 @@ if(len(sys.argv)==4):
         exit()
     elif(sys.argv[1]=="-scp"):
         scp(sys.argv)
+        exit()
+    elif(sys.argv[1]=="-uu" or sys.argv[1]=="--update-user"):
+        updatePartial(sys.argv[2], "-uu", sys.argv[3])
+        exit()
+    elif(sys.argv[1]=="-uf" or sys.argv[1]=="--update-flags"):
+        updatePartial(sys.argv[2], "-uf", sys.argv[3])
+        exit()
+    elif(sys.argv[1]=="-ui" or sys.argv[1]=="--update-ipdomain"):
+        updatePartial(sys.argv[2], "-ui", sys.argv[3])
         exit()
     
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
@@ -398,6 +455,12 @@ if(len(sys.argv)==5):
     elif(sys.argv[1]=="-scp"):
         print("Error: Too many arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
                 "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
 else:
     print("Error: unrecognized command, type connect -h for help")
