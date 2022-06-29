@@ -105,6 +105,21 @@ ssh connecitons
 				Ex. connect -u [name] [user]@[domain]
 				Ex. connect -u [name] [user]@[domain] "[sshFlags]"
 	
+	-uu,--update-user       Updates a current connection's user based
+                                on the name
+                                Ex. connect -uu [name] [user]
+                                Ex. connect -uu webserver webadmin"
+
+        -uf,--update-flags      Updates a current connection's ssh flags based
+                                on the name
+                                Ex. connect -uf [name] "[ssh flags]"
+                                Ex. connect -uf nas "-p 34521 -i ~/.ssh/id_rsa"
+
+        -ui,--update-ipdomain   Updates a current connection's domain/ip based
+                                on the name
+                                Ex. connect -ui [name] [ip/domain]
+                                Ex. connect -ui vpn 192.164.1.146
+	
 	-U,--upgrade        	Checks to see if there is a newer version and
                 		and will automatically update for you
                 		Ex. connect -U
