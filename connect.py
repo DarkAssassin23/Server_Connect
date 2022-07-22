@@ -7,7 +7,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "2.2"
+version = "2.2.1"
 whiteSpace = ' '
 connections = {}
 
@@ -55,8 +55,9 @@ def printHelp():
     print("%s-h,--help%sBrings up list of commands" % (whiteSpace*4, whiteSpace*16))
     print("%sEx. connect -h\n" % (whiteSpace*29))
 
-    print("%s-v,--view%sView the list of all your connections" % (whiteSpace*4, whiteSpace*16))
-    print("%sEx. connect -v\n" % (whiteSpace*29))
+    print("%s-v,--view%sView the list of all your connections or a\n%ssingle connection by typing its name" % (whiteSpace*4, whiteSpace*16, whiteSpace*29))
+    print("%sEx. connect -v" % (whiteSpace*29))
+    print("%sEx. connect -v web_server\n" % (whiteSpace*29))
 
     print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections with any additional ssh flags" % 
         (whiteSpace*4, whiteSpace*17, whiteSpace*29))
@@ -121,6 +122,22 @@ def viewConnections():
         else:
             print("%sAdditional Flags: %s" % (whiteSpace*4, val[1]))
         print()
+
+def viewSingleConnection(connName):
+    if(not bool(connections)):
+        print("No saved connections")
+        exit()
+    if(connName in connections):
+        print("Name: "+connName)
+        print("%sUsername and domain/ip: %s" % (whiteSpace*4, connections[connName][0]))
+        if(connections[connName][1]==""):
+            print("%sAdditional Flags: N/A" % (whiteSpace*4))
+        else:
+            print("%sAdditional Flags: %s" % (whiteSpace*4, connections[connName][1]))
+        exit()
+    else:
+        print("Error: The connection \'"+connName+"\' does not exist in your list of connections")
+        exit()
 
 # Makes sure the username and domain combo
 # is formated correctly
@@ -334,6 +351,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-scp"):
         scp(sys.argv)
         exit()
+    elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
+        viewSingleConnection(sys.argv[2])
+        exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
         
@@ -348,9 +368,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
-    elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-        print("Error: Too many arguments given, type connect -h for help")
-        exit()
+    # elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
+    #     print("Error: Too many arguments given, type connect -h for help")
+    #     exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         print("Error: No user and domain given, type connect -h for help")
         exit()
