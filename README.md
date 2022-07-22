@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 2.2<br />
-**Published Date:** 6/29/2022
+**Version:** 2.2.1<br />
+**Published Date:** 7/22/2022
 
 GENERAL USAGE NOTES
 ----------------------
@@ -83,7 +83,9 @@ ssh connecitons
 				Ex. connect -h
 
 	-v,--view		View the list of all your connections
+				single connection by typing its name
 				Ex. connect -v
+				Ex. connect -v web_server
 
 	-a,--add 		Adds a new connection to your list of current 
 				connections with any additional ssh flags
