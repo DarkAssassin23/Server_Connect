@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
-import os, sys, platform
-from unittest import result
+import os, sys, platform, socket, re
 from requests import get
+from subprocess import Popen, PIPE
 if(platform.system() == "Windows"):
     from pyreadline import Readline
 else:
     import readline
+
+#TODO: 
+# - Update version to 3.0
+# - Add -wol flag for wake-on-lan and implement it (view getMACAddress.py for details)
+# - Add -um flag to update mac address
 
 version = "2.2.1"
 whiteSpace = ' '
@@ -21,16 +26,27 @@ def loadConnections():
         with open(path+"/connections.txt","r") as f:
             contents = f.readlines()
         for x in contents:
-            temp = x.split()
-            if(len(temp) == 2):
-                connections[temp[0]] = [temp[1], ""]
-            elif(len(temp) > 2):
-                additionalFlags = ""
-                for x in range(2,len(temp)):
-                    additionalFlags += temp[x] + " "
-                connections[temp[0]] = [temp[1], additionalFlags]
+            # Legacy support for older connection.txt format, 
+            # this format is deprecated as of version 3.0
+            if(not("\0" in x)):
+                temp = x.split()
+                if(len(temp) == 2):
+                    connections[temp[0]] = [temp[1], ""]
+                elif(len(temp) > 2):
+                    additionalFlags = ""
+                    for x in range(2,len(temp)):
+                        additionalFlags += temp[x] + " "
+                    connections[temp[0]] = [temp[1], additionalFlags]
+                else:
+                    print("An error occured reading in your connection \""+temp[0]+"\". check your ~/.ssh/connections.txt file")
+            # Current standard, as of version 3.0
             else:
-                print("An error occured reading in your connection \""+temp[0]+"\". check your ~/.ssh/connections.txt file")
+                temp = x.split("\0")
+                if(len(temp) == 4):
+                    connections[temp[0]] = [temp[1], temp[2], temp[3].strip()]
+                else:
+                    print("An error occured reading in your connection \""+temp[0]+"\". check your ~/.ssh/connections.txt file")
+
     except:
         pass
 
@@ -39,13 +55,17 @@ def loadConnections():
 def saveConnections():
     with open(path+"/connections.txt","w") as file:
         for key,val in sorted(connections.items()):
-            file.write(key+" "+val[0]+" "+val[1]+"\n")
+            # Legacy support for old connections.txt files
+            while(len(val)<3):
+                val.append("")
+
+            file.write(key+"\0"+val[0]+"\0"+val[1]+"\0"+val[2]+"\n")
 
 # Prints the help menu with all the commands
 # as well as what they do
 def printHelp():
     print("Server Connect interface, allows you to easily connect to "+
-        "and manage all your \nssh connecitons\n")
+        "and manage all your \nssh connections\n")
 
     print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
         (whiteSpace*4, whiteSpace*19, whiteSpace*29, whiteSpace*29))
@@ -78,6 +98,11 @@ def printHelp():
         (whiteSpace*4, whiteSpace*14, whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
+
+    print("%s-um,--update-mac%sUpdates/adds the MAC Address for current connection\n%sbased on the name, for use with Wake-On-LAN" % 
+        (whiteSpace*4, whiteSpace*9, whiteSpace*29))
+    print("%sEx. connect -um [name]" % (whiteSpace*29))
+    print("%sEx. connect -um [name] [MAC Address]\n" % (whiteSpace*29))
 
     print("%s-uu,--update-user%sUpdates a current connection\'s user based\n%son the name" % 
         (whiteSpace*4, whiteSpace*8, (whiteSpace*29)))
@@ -121,6 +146,14 @@ def viewConnections():
             print("%sAdditional Flags: N/A" % (whiteSpace*4))
         else:
             print("%sAdditional Flags: %s" % (whiteSpace*4, val[1]))
+        # Legacy check for older connection.txt files that have
+        # not been updated to the 3.0 and later standard
+        if(len(val)==2):
+            print("%sMAC Address: N/A" % (whiteSpace*4))
+        elif(val[2]==""):
+            print("%sMAC Address: N/A" % (whiteSpace*4))
+        else:
+            print("%sMAC Address: %s" % (whiteSpace*4, val[2]))
         print()
 
 def viewSingleConnection(connName):
@@ -134,6 +167,14 @@ def viewSingleConnection(connName):
             print("%sAdditional Flags: N/A" % (whiteSpace*4))
         else:
             print("%sAdditional Flags: %s" % (whiteSpace*4, connections[connName][1]))
+        # Legacy check for older connection.txt files that have
+        # not been updated to the 3.0 and later standard
+        if(len(connections[connName])==2):
+            print("%sMAC Address: N/A" % (whiteSpace*4))
+        elif(connections[connName][2]==""):
+            print("%sMAC Address: N/A" % (whiteSpace*4))
+        else:
+            print("%sMAC Address: %s" % (whiteSpace*4, connections[connName][2]))
         exit()
     else:
         print("Error: The connection \'"+connName+"\' does not exist in your list of connections")
@@ -286,6 +327,127 @@ def updatePartial(name, flag, sectionToUpdate):
     else:
         print("Error: That connection name does not exist in your list of connections")
 
+# Ping the remote host, based on the given IP, to 
+# ensure the host is in the ARP table, if it is 
+# on the same LAN, and or, responding to pings
+def pingHost(ip):
+    cmd = ['ping', '-c', '1', '-t', '1', ip]
+    process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    return process.returncode == 0 # code=0 means available
+
+# Dynamically pull MAC Address of the given IP from
+# the systems ARP table
+def getMAC(ip):
+    if(platform.system() == "Darwin"):
+        arpflag = "-n"
+    else:
+        arpflag = "-a"
+    process = Popen(["arp", arpflag, ip], stdout=PIPE, stderr=PIPE)
+    stdout, stderr = process.communicate()
+    # Make sure command succeeded
+    if(process.returncode == 0):
+        output = stdout.decode()
+        if("no entry" in output or "(incomplete)" in output):
+            return "N/A"
+        else:
+            # Strip MAC Address
+            for x in output.split():
+                if(re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", x.lower())):
+                    mac = x.replace("-",":")
+                    break
+            # Check to see if any octets are missing a leading 0
+            if(len(mac)<17):
+                octets = mac.split(":")
+                mac = ""
+                for o in octets:
+                    # If current octet is missing a leading 0
+                    # add it
+                    if(not len(o) == 2):
+                        mac += "0"
+                    mac += o+":"
+                # Remove the extra ':' at the end
+                mac = mac[:len(mac)-1]
+            return mac
+    return "N/A"
+
+# Checks to see if the given MAC Address is valid
+def validMACAddress(macAddress):
+    if(re.match("[0-9a-f]{2}([:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", macAddress.lower())):
+        return True
+    else:
+        return False
+
+# If the MAC Address failed to be retrieved automatically 
+# and the prompt flag was passed, or the user manually 
+# specified a MAC Address this funciton will be called.
+# it checks to make sure the MAC Address is valid before 
+# adding it to the connection
+def addMACAddress(name, macaddr=""):
+    if(validMACAddress(macaddr)):
+        while(len(connections[name])<3):
+            connections[name].append("")
+        connections[name][2] = macaddr
+        saveConnections()
+        print("MAC Address successfully added to the connection")
+        exit()
+    elif(not macaddr==""):
+        print("Error: Invalid MAC Address")
+        print("MAC Address should be formated like so: 00:11:22:33:44:55")
+        exit()
+    else:
+        choice = input("Would you like to manually add it? (y/n) ")
+    if(choice.lower() == "y"):
+        mac = input(f"Enter the MAC Address for the connection \'{name}\': ")
+        if(validMACAddress(mac)):
+            connections[name][2] = mac
+            saveConnections()
+            print("MAC Address successfully added to the connection")
+            exit()
+        else:
+            print("Error: Invalid MAC Address")
+            print("MAC Address should be formated like so: 00:11:22:33:44:55")
+            exit()
+    elif(choice.lower() == "n"):
+        print("No MAC Address added")
+        exit()
+    else:
+        print("Invalid Choice. No MAC Address Added.\nAborting...")
+        exit()
+
+    return "N/A"
+
+# Automatically tries to pull the MAC Address from the connection
+# if it fails to do so, it will prompt the user if they would like
+# to manually add the MAC Address, if the prompt flag is set to True
+def getMACAddress(name, prompt=False):
+    gotmac = False
+    while(len(connections[name])<3):
+        connections[name].append("")
+    ip = connections[name][0].split("@")[1]
+    mac = getMAC(ip)
+    if(mac == "N/A"):
+        if(not pingHost(ip)):
+            if(prompt):
+                print("Unable to dynamically pull MAC Address.")
+                addMACAddress(name)
+        else:
+            mac = getMAC(ip)
+            if(mac == "N/A"):
+                if(prompt):
+                    print("Unable to dynamically pull MAC Address. The given IP is not on the LAN.")
+                    addMACAddress(name)
+            else:
+                connections[name][2] = mac
+                gotmac = True 
+    else:
+        connections[name][2] = mac
+        gotmac = True
+    
+    if(gotmac):
+        saveConnections()
+        print("MAC Address successfully added to the connection")
+
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>5):
     print("Invalid number of arguments, type connect -h for help")
@@ -336,6 +498,9 @@ if(len(sys.argv)==2):
         print("Error: No arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
                 "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
+        print("Error: No connection given to update a MAC Address for. Type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
         print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
         exit()
@@ -354,6 +519,12 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
         viewSingleConnection(sys.argv[2])
         exit()
+    elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
+        if(sys.argv[2] in connections):
+            getMACAddress(sys.argv[2], True)
+        else:
+            print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
+        exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
         
@@ -368,9 +539,6 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
-    # elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-    #     print("Error: Too many arguments given, type connect -h for help")
-    #     exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         print("Error: No user and domain given, type connect -h for help")
         exit()
@@ -411,6 +579,12 @@ if(len(sys.argv)==4):
         exit()
     elif(sys.argv[1]=="-scp"):
         scp(sys.argv)
+        exit()
+    elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
+        if(sys.argv[2] in connections):
+            addMACAddress(sys.argv[2], sys.argv[3])
+        else:
+            print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
     elif(sys.argv[1]=="-uu" or sys.argv[1]=="--update-user"):
         updatePartial(sys.argv[2], "-uu", sys.argv[3])
@@ -471,6 +645,9 @@ if(len(sys.argv)==5):
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
+        print("Error: Too many arguments given. Type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
         print("Error: Too many arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
