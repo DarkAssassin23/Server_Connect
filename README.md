@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 2.2.1<br />
-**Published Date:** 7/22/2022
+**Version:** 3.0<br />
+**Published Date:** 11/6/2022
 
 GENERAL USAGE NOTES
 ----------------------
@@ -11,6 +11,7 @@ file for it
 connections.
 - As of version 2.0, any new software updates can be downloaded and installed through the
 CLI itself without having to download and install a new version yourself
+- As of version 3.0, this software also has support to send Wake-on-LAN signals to connections
 
 ---------
 
@@ -191,6 +192,8 @@ double quotes, and must go before, and be seprate from, the quotes surrounding t
 you want to copy and the destination you want to copy to. Otherwise, it will not work. 
 
 __________
+
+Utilizing Wake-on-LAN with Server Connect
 
 Windows Uninstall
 ----------
