@@ -9,8 +9,7 @@ else:
 
 #TODO: 
 # - Update version to 3.0
-# - Add -wol flag for wake-on-lan and implement it (view getMACAddress.py for details)
-# - Add -um flag to update mac address
+# - Add -wol flag for Wake-on-LAN and implement it (view getMACAddress.py for details)
 
 version = "2.2.1"
 whiteSpace = ' '
@@ -99,7 +98,7 @@ def printHelp():
     print("%sEx. connect -u [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
-    print("%s-um,--update-mac%sUpdates/adds the MAC Address for current connection\n%sbased on the name, for use with Wake-On-LAN" % 
+    print("%s-um,--update-mac%sUpdates/adds the MAC Address for current connection\n%sbased on the name, for use with Wake-on-LAN" % 
         (whiteSpace*4, whiteSpace*9, whiteSpace*29))
     print("%sEx. connect -um [name]" % (whiteSpace*29))
     print("%sEx. connect -um [name] [MAC Address]\n" % (whiteSpace*29))
@@ -131,6 +130,11 @@ def printHelp():
         (whiteSpace*4, whiteSpace*21, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect -scp \"Documents/data.txt nas:~/Data\"" % (whiteSpace*29))
     print("%sEx. connect -scp \"-r\" \"Documents/Data/ nas:~/Data\"\n"  % (whiteSpace*29))
+
+    print("%s-wol%sSends a Wake-on-LAN signal to the given connection" % 
+        (whiteSpace*4, whiteSpace*21))
+    print("%sEx. connect -wol [name]" % (whiteSpace*29))
+    print("%sEx. connect -wol plex_server\n" % (whiteSpace*29))
 
 # Checks if there are any connections saved
 # if there are some it prints them out
@@ -448,6 +452,38 @@ def getMACAddress(name, prompt=False):
         saveConnections()
         print("MAC Address successfully added to the connection")
 
+def runWOL(name):
+    if(len(connections[name])<3):
+        print("Error: This connection does not support Wake-on-LAN")
+        print("Your connection has not been updated to the latest "+
+            "Server Connect 3.0\nconnection standard. You can fix this by running the "+
+            "-um or --update-mac\ncommand to add a MAC Address to this connection "+
+            "and bring all your\nconnections up to the Server Connect 3.0 connection standard")
+    else:
+        WOL(connections[name][2])
+        print("Wake-on-LAN signal sent.")
+
+def WOL(macAddress):
+    braodcastIP = "255.255.255.255"
+    # Default WOL port is 9
+    wolPort = 9
+    # The format of a Wake-on-LAN (WOL) magic packet is 
+    # defined as a byte array with 6 bytes of value 255 (0xFF) 
+    # and 16 repetitions of the target machine’s 48-bit (6-byte) MAC address.
+    # ref: https://en.wikipedia.org/wiki/Wake-on-LAN#Magic_packet 
+    msg = 'ff' * 6 + macAddress.replace(":","") * 16
+    magicPacket = bytes.fromhex(msg)
+
+    # Setup UDP Broadcast socket
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)
+
+    # Send magic packet
+    sock.sendto(magicPacket,(braodcastIP,wolPort))
+
+    # Close socket
+    sock.close()
+
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>5):
     print("Invalid number of arguments, type connect -h for help")
@@ -501,6 +537,9 @@ if(len(sys.argv)==2):
     elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
         print("Error: No connection given to update a MAC Address for. Type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-wol"):
+        print("Error: No connection given to send the Wake-on-LAN signal to. Type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
         print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
         exit()
@@ -522,6 +561,12 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
         if(sys.argv[2] in connections):
             getMACAddress(sys.argv[2], True)
+        else:
+            print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
+        exit()
+    elif(sys.argv[1]=="-wol"):
+        if(sys.argv[2] in connections):
+            runWOL(sys.argv[2])
         else:
             print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
@@ -614,6 +659,9 @@ if(len(sys.argv)==4):
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-wol"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
 
 if(len(sys.argv)==5):
     if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -648,6 +696,9 @@ if(len(sys.argv)==5):
         exit()
     elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
         print("Error: Too many arguments given. Type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-wol"):
+        print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
         print("Error: Too many arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
