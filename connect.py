@@ -7,11 +7,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-#TODO: 
-# - Update version to 3.0
-# - Add -wol flag for Wake-on-LAN and implement it (view getMACAddress.py for details)
-
-version = "2.2.1"
+version = "3.0"
 whiteSpace = ' '
 connections = {}
 
