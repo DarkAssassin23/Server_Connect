@@ -467,8 +467,12 @@ def runWOL(name):
             "-um or --update-mac\ncommand to add a MAC Address to this connection "+
             "and bring all your\nconnections up to the Server Connect 3.0 connection standard")
     else:
-        WOL(connections[name][2])
-        print("Wake-on-LAN signal sent.")
+        if(connections[name][2]==""):
+            print("Error: There is no MAC Address associated with this connection")
+            print(f"You can add it with the following command 'connect -um {name}'")
+        else:    
+            WOL(connections[name][2])
+            print("Wake-on-LAN signal sent.")
 
 def WOL(macAddress):
     braodcastIP = "255.255.255.255"
