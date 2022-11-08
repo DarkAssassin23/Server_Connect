@@ -2,6 +2,20 @@
 **Version:** 3.0<br />
 **Published Date:** 11/6/2022
 
+## Table of Contents
+* [General Usage](#general-usage-notes)
+* [System Requirenments](#system-requirenments)
+* Installing Server Connect
+	* [Windows](#windows-installation)
+	* [macOS/Linux](#macoslinux-installation)
+* [Using Server Connect](#utilizing-server-connect)
+	* [Using Server Connect with SSH Flags](#utilizing-ssh-flags-with-server-connect)
+	* [Using SCP with Server Connect](#utilizing-scp-with-server-connect)
+	* [Using Wake-on-Lan with Server Connect](#utilizing-wake-on-lan-with-server-connect)
+* Uninstalling Server Connect
+	* [Windows](#windows-uninstall)
+	* [macOS/Linux](#macoslinux-uninstall)
+
 GENERAL USAGE NOTES
 ----------------------
 - This software is equipped with a CLI to manage all your ssh connections for you
@@ -194,6 +208,49 @@ you want to copy and the destination you want to copy to. Otherwise, it will not
 __________
 
 Utilizing Wake-on-LAN with Server Connect
+------
+As of Server Connect version 3.0, Server Connect now has support for
+sending Wake-on-LAN magic packets to your connections. 
+## Prerequisites
+In order to be able to utilize this feature, you first need to ensure 
+that your connection you wish to use this functionality with has a 
+MAC address associated with it. As seen in the 
+[Utilizing Server Connect](#utilizing-server-connect)
+section, this can be done with the following command:
+```bash
+connect -um [nameOfConnection]
+```
+By running this command. Server Connect will automatically pull the 
+MAC address, **IF** it meets the following criteria:
+1. The connection is on your LAN
+2. The connection is powered on and reachable through the network
+
+Otherwise, Server Connect will prompt you asking if you would like to
+manually add the MAC address.
+
+If you do not wish for Server Connect to automatically pull the MAC
+address, you can manually set it with the following command:
+```bash
+connect -um [nameOfConnection] 00:11:22:33:44:55
+```
+
+Where <code>00:11:22:33:44:55</code> would be substituted with the 
+actual MAC address of the system.
+
+## Using Wake-on-LAN
+Once you have a MAC address associated with your connection, as seen 
+in the [Utilizing Server Connect](#utilizing-server-connect)
+section, you can send a Wake-on-LAN signal to your connection with
+the following command:
+```bash
+connect -wol [nameOfConnection]
+```
+Assuming your connection meets the following criteria, it should
+begin booting
+
+1. Wake-on-LAN is supported by the physical device and is turned on
+2. The physical device is on your LAN
+_________
 
 Windows Uninstall
 ----------
