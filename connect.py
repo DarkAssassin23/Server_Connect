@@ -281,15 +281,20 @@ def scp(command):
     nameOfConnection = ""
     indexLocationOfFiles = len(command)-1
     fileLocations = command[indexLocationOfFiles].split()
-    if(":" in fileLocations[0]):
-        nameOfConnection = fileLocations[0][:fileLocations[0].find(":")]
-    elif(":" in fileLocations[1]):
-        nameOfConnection = fileLocations[1][:fileLocations[1].find(":")]
-    else:
-        print("Error: Invalid formating of server connection. It should look like [connection]:/path/to/file")
-        exit()
+    colon = command[indexLocationOfFiles].find(":")
+    if(colon == -1 ):
+         print("Error: Invalid formating of server connection. It should look like [connection]:/path/to/file")
+         exit()
+    else: 
+        if(" " in command[indexLocationOfFiles][:colon]):
+            reverse = command[indexLocationOfFiles][:colon]
+            spaceIndex = len(command[indexLocationOfFiles][:colon]) - reverse.index(" ")
+        else:
+            spaceIndex = 0
+        
+        nameOfConnection = command[indexLocationOfFiles][spaceIndex:colon].strip()
     try:
-        command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection, connections[nameOfConnection][0])
+        command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection+":", connections[nameOfConnection][0]+":",1)
         additionalCommands = connections[nameOfConnection][1]
         additionalCommands = additionalCommands.replace("-p","-P")
         scpCommand = ""
