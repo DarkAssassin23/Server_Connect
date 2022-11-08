@@ -122,6 +122,11 @@ ssh connecitons
 				Ex. connect -u [name] [user]@[domain]
 				Ex. connect -u [name] [user]@[domain] "[sshFlags]"
 	
+	-um,--update-mac        Updates/adds the MAC Address for current connection
+                             	based on the name, for use with Wake-on-LAN
+                             	Ex. connect -um [name]
+                             	Ex. connect -um [name] [MAC Address]
+			     
 	-uu,--update-user       Updates a current connection's user based
                                 on the name
                                 Ex. connect -uu [name] [user]
@@ -150,6 +155,10 @@ ssh connecitons
                 		of your connections
                 		Ex. connect -scp "Documents/data.txt nas:~/Data"
                 		Ex. connect -scp "-r" "Documents/Data/ nas:~/Data"	
+	
+	-wol                    Sends a Wake-on-LAN signal to the given connection
+                             	Ex. connect -wol [name]
+                             	Ex. connect -wol plex_server
 ```
 This is a list of all the current supported comands and their functionality
 ________
