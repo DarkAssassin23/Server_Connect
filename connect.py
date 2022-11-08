@@ -195,13 +195,17 @@ def update(name, userAdomain, additionalFlags = ""):
         print("Error: invalid user and domain\nmake sure to use the following"+
             " format: [user]@[domain]")
         exit()
+    
     if(name in connections):
         connections[name] = [userAdomain, additionalFlags]
+        saveConnections()
         print("Connection successfully updated")
     else:
         connections[name] = [userAdomain, additionalFlags]
+        saveConnections()
         print("Connection successfully added")
-    saveConnections()
+    getMACAddress(name, False, True)
+    
 
 # If the connection exists, it deletes it
 def delete(name):
@@ -329,6 +333,7 @@ def updatePartial(name, flag, sectionToUpdate):
 
         saveConnections()
         print("Connection successfully updated")
+        getMACAddress(name, False, True)
     else:
         print("Error: That connection name does not exist in your list of connections")
 
@@ -358,7 +363,7 @@ def getMAC(ip):
         else:
             # Strip MAC Address
             for x in output.split():
-                if(re.match("[0-9a-f]{2}([-:])[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$", x.lower())):
+                if(re.match("[0-9a-f]{1,2}([-:])[0-9a-f]{1,2}(\\1[0-9a-f]{1,2}){4}$", x.lower())):
                     mac = x.replace("-",":")
                     break
             # Check to see if any octets are missing a leading 0
@@ -425,7 +430,7 @@ def addMACAddress(name, macaddr=""):
 # Automatically tries to pull the MAC Address from the connection
 # if it fails to do so, it will prompt the user if they would like
 # to manually add the MAC Address, if the prompt flag is set to True
-def getMACAddress(name, prompt=False):
+def getMACAddress(name, prompt=False, quiet=False):
     gotmac = False
     while(len(connections[name])<3):
         connections[name].append("")
@@ -451,7 +456,8 @@ def getMACAddress(name, prompt=False):
     
     if(gotmac):
         saveConnections()
-        print("MAC Address successfully added to the connection")
+        if(not quiet):
+            print("MAC Address successfully added to the connection")
 
 def runWOL(name):
     if(len(connections[name])<3):
