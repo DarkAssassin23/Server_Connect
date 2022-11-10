@@ -59,15 +59,15 @@ def saveConnections():
 # Prints the help menu with all the commands
 # as well as what they do
 def printHelp():
-    print("Server Connect interface, allows you to easily connect to "+
-        "and manage all your \nssh connections\n")
+    print("Server Connect allows you to easily connect to "+
+        "and manage all your \nssh connections. Below is a list of the supported commands and functionality\n")
 
     print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
         (whiteSpace*4, whiteSpace*19, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
     print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"\n" % (whiteSpace*29))
 
-    print("%s-h,--help%sBrings up list of commands" % (whiteSpace*4, whiteSpace*16))
+    print("%s-h,--help%sBrings up the list of commands" % (whiteSpace*4, whiteSpace*16))
     print("%sEx. connect -h\n" % (whiteSpace*29))
 
     print("%s-v,--view%sView the list of all your connections or a\n%ssingle connection by typing its name" % (whiteSpace*4, whiteSpace*16, whiteSpace*29))
@@ -92,12 +92,12 @@ def printHelp():
     print("%s-D,--delete-all%sDeletes all connections" % (whiteSpace*4, whiteSpace*10))
     print("%sEx. connect -D\n" % (whiteSpace*29))
 
-    print("%s-u,--update%sUpdates a current connection based on the name,\n%snew user and domain/ip, and ssh flags" % 
+    print("%s-u,--update%sUpdates a current connection based on the name,\n%snew user, domain/ip, and ssh flags" % 
         (whiteSpace*4, whiteSpace*14, whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain]" % (whiteSpace*29))
     print("%sEx. connect -u [name] [user]@[domain] \"[sshFlags]\"\n" % (whiteSpace*29))
 
-    print("%s-um,--update-mac%sUpdates/adds the MAC Address for current connection\n%sbased on the name, for use with Wake-on-LAN" % 
+    print("%s-um,--update-mac%sUpdates/adds the MAC Address for the specified\n%sconnection, for use with Wake-on-LAN" % 
         (whiteSpace*4, whiteSpace*9, whiteSpace*29))
     print("%sEx. connect -um [name]" % (whiteSpace*29))
     print("%sEx. connect -um [name] [MAC Address]\n" % (whiteSpace*29))

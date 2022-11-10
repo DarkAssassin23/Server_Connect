@@ -85,8 +85,8 @@ or
 
 This will display the follwing man page style menu
 ```
-Server Connect interface, allows you to easily connect to and manage all your 
-ssh connecitons
+Server Connect allows you to easily connect to and manage all your 
+ssh connecitons. Below is a list of the supported commands and functionality
 
 	[name] 			Name of one of your connections your trying to
 				connect to. Additionaly, you can append regular ssh
@@ -94,13 +94,17 @@ ssh connecitons
 				Ex. connect vpn_server
 				Ex. connect vpn_server "-i ~/.ssh/id_rsa -p 2653"
 
-	-h,--help		Brings up list of commands
+	-h,--help		Brings up the list of commands
 				Ex. connect -h
 
 	-v,--view		View the list of all your connections
 				single connection by typing its name
 				Ex. connect -v
 				Ex. connect -v web_server
+
+	-l,--list		Lists the names of all your connections
+				Ex. connect -l
+
 
 	-a,--add 		Adds a new connection to your list of current 
 				connections with any additional ssh flags
@@ -118,12 +122,12 @@ ssh connecitons
 				Ex. connect -D
 
 	-u,--update 		Updates a current connection based on the name,
-                		new user and domain/ip, and ssh flags
+                		new user, domain/ip, and ssh flags
 				Ex. connect -u [name] [user]@[domain]
 				Ex. connect -u [name] [user]@[domain] "[sshFlags]"
 	
-	-um,--update-mac        Updates/adds the MAC Address for current connection
-                             	based on the name, for use with Wake-on-LAN
+	-um,--update-mac        Updates/adds the MAC Address for the specified 
+								connection, for use with Wake-on-LAN
                              	Ex. connect -um [name]
                              	Ex. connect -um [name] [MAC Address]
 			     
