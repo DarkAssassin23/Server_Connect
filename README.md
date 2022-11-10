@@ -1,10 +1,10 @@
 # Server Connect
 **Version:** 3.0<br />
-**Published Date:** 11/6/2022
+**Published Date:** 11/8/2022
 
 ## Table of Contents
 * [General Usage](#general-usage-notes)
-* [System Requirenments](#system-requirenments)
+* [System Requirements](#system-requirements)
 * Installing Server Connect
 	* [Windows](#windows-installation)
 	* [macOS/Linux](#macoslinux-installation)
@@ -29,7 +29,7 @@ CLI itself without having to download and install a new version yourself
 
 ---------
 
-System Requirenments 
+System Requirements 
 ----------
 - Python3
 - Pip3

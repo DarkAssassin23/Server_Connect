@@ -74,6 +74,9 @@ def printHelp():
     print("%sEx. connect -v" % (whiteSpace*29))
     print("%sEx. connect -v web_server\n" % (whiteSpace*29))
 
+    print("%s-l,--list%sLists the names of all your connections" % (whiteSpace*4, whiteSpace*16))
+    print("%sEx. connect -l\n" % (whiteSpace*29))
+
     print("%s-a,--add%sAdds a new connection to your list of current\n%sconnections with any additional ssh flags" % 
         (whiteSpace*4, whiteSpace*17, whiteSpace*29))
     print("%sEx. connect -a [name] [user]@[domain]" % (whiteSpace*29))
@@ -179,6 +182,11 @@ def viewSingleConnection(connName):
     else:
         print("Error: The connection \'"+connName+"\' does not exist in your list of connections")
         exit()
+
+# Lists the names of all your connections
+def listConnections():
+    for k in connections.keys():
+        print(k)
 
 # Makes sure the username and domain combo
 # is formated correctly
@@ -512,6 +520,9 @@ if(len(sys.argv)==2):
     elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
         deleteAll()
         exit()
+    elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
+        listConnections()
+        exit()
     elif(sys.argv[1]=="--version"):
         print("Server Connect version "+version)
         exit()
@@ -610,6 +621,9 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="--version"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
@@ -667,6 +681,9 @@ if(len(sys.argv)==4):
     elif(sys.argv[1]=="--version"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
@@ -700,6 +717,9 @@ if(len(sys.argv)==5):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
