@@ -1,6 +1,6 @@
 # Server Connect
 **Version:** 3.0<br />
-**Published Date:** 11/8/2022
+**Published Date:** 11/10/2022
 
 ## Table of Contents
 * [General Usage](#general-usage-notes)
@@ -40,12 +40,12 @@ ________
 
 Windows Installation
 ----------
-Compared to previous versions, As of version 2.0 the Windows installation has been 
-streamlined. Simply run the `install.bat` file. and you will be good to go.
+As of version 2.0 the Windows installation has been 
+streamlined. Simply download the Windows release from the releases tab and run the `install.bat` file and you will be good to go.
 
-One thing to note, can install the program perfectly fine without admin privileges, 
+One thing to note, though, you can install the program perfectly fine without admin privileges, 
 however, it is not recommended since if you do not run the installer with admin 
-privileges you will then have to do one of the follwoing:
+privileges you will then have to do one of the following:
 
 1. Log out and log back in
 2. Open 'Advanced System Settings' -> Environment Variables, then select 'OK' and 'OK' again
@@ -64,7 +64,7 @@ ______
 macOS/Linux Installation
 ------------------------
 
-To install Server Connect on macOS/Linux run the install script
+To install Server Connect on macOS/Linux, download the macOS/Linux version from the releases tab and run the install script
 ```bash
 ./install
 ```
@@ -164,7 +164,7 @@ ssh connecitons. Below is a list of the supported commands and functionality
                              	Ex. connect -wol [name]
                              	Ex. connect -wol plex_server
 ```
-This is a list of all the current supported comands and their functionality
+This is a list of all the current supported commands and their functionality
 ________
 
 Utilizing SSH flags with Server Connect
