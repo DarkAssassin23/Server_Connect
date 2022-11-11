@@ -62,7 +62,6 @@ def saveConnections():
     global connectionsFile
     try:
         if(deprecatedFile):
-            print(connectionsFile)
             connectionsFile = connectionsFile[:len(connectionsFile)-4]+".dat"
         with open(connectionsFile+".tmp","w") as file:
             for key,val in sorted(connections.items()):
@@ -92,6 +91,7 @@ def saveConnections():
         except:
             os.rename(connectionsFile[:len(connectionsFile)-4]+".txt", connectionsFile[:len(connectionsFile)-4]+".txt.bak")
             print(f"Old connections file renamed to \'connections.txt.bak\'")
+        deprecatedFile = False
 
 # Prints the help menu with all the commands
 # as well as what they do
@@ -403,7 +403,9 @@ def getMAC(ip):
     # Make sure command succeeded
     if(process.returncode == 0):
         output = stdout.decode()
-        if("no entry" in output or "(incomplete)" in output):
+        if("no entry" in output 
+            or "(incomplete)" in output
+            or "no match" in output):
             return "N/A"
         else:
             # Strip MAC Address
