@@ -127,7 +127,7 @@ ssh connecitons. Below is a list of the supported commands and functionality
 				Ex. connect -u [name] [user]@[domain] "[sshFlags]"
 	
 	-um,--update-mac        Updates/adds the MAC Address for the specified 
-								connection, for use with Wake-on-LAN
+				connection, for use with Wake-on-LAN
                              	Ex. connect -um [name]
                              	Ex. connect -um [name] [MAC Address]
 			     
