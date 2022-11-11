@@ -77,13 +77,13 @@ def saveConnections():
         print("An error occured saving your connections.\nAborting...")
         exit()
     if(deprecatedFile):
-        print("Your connections were read in from an older format with a deprecated filetype. "+
-            "Your connections have been automatically updated to the new standard and new file format. "+
+        print("Your connections were read in from an older format with a deprecated filetype.\n"+
+            "Your connections have been automatically updated to the new standard and new\nfile format. "+
             "What would you like to do with the old file?")
         print("1. Delete it")
         print("2. Save it as a backup (default)")
         try:
-            choice = int(input("Select an options: "))
+            choice = int(input("Select an option: "))
             if(choice == 1):
                 os.remove(connectionsFile[:len(connectionsFile)-4]+".txt")
                 print("Old file deleted")
