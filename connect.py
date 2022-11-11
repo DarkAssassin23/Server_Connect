@@ -26,6 +26,8 @@ def loadConnections():
         elif(os.path.exists(connectionsFile+".txt")):
             deprecatedFile = True
             connectionsFile += ".txt"
+        else:
+            connectionsFile += ".dat"
 
         contents = []
         with open(connectionsFile,"r") as f:
