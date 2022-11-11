@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, sys, platform, socket, re
+import os, sys, platform, socket, re, shutil
 from requests import get
 from subprocess import Popen, PIPE
 if(platform.system() == "Windows"):
@@ -70,7 +70,7 @@ def saveConnections():
                     val.append("")
 
                 file.write(key+"\0"+val[0]+"\0"+val[1]+"\0"+val[2]+"\n")
-        os.rename(connectionsFile+".tmp", connectionsFile)
+        shutil.move(connectionsFile+".tmp", connectionsFile)
     except:
         print("An error occured saving your connections.\nAborting...")
         exit()
@@ -86,10 +86,10 @@ def saveConnections():
                 os.remove(connectionsFile[:len(connectionsFile)-4]+".txt")
                 print("Old file deleted")
             else:
-                os.rename(connectionsFile[:len(connectionsFile)-4]+".txt", connectionsFile[:len(connectionsFile)-4]+".txt.bak")
+                shutil.move(connectionsFile[:len(connectionsFile)-4]+".txt", connectionsFile[:len(connectionsFile)-4]+".txt.bak")
                 print(f"Old connections file renamed to \'connections.txt.bak\'")
         except:
-            os.rename(connectionsFile[:len(connectionsFile)-4]+".txt", connectionsFile[:len(connectionsFile)-4]+".txt.bak")
+            shutil.move(connectionsFile[:len(connectionsFile)-4]+".txt", connectionsFile[:len(connectionsFile)-4]+".txt.bak")
             print(f"Old connections file renamed to \'connections.txt.bak\'")
         deprecatedFile = False
 
@@ -405,7 +405,8 @@ def getMAC(ip):
         output = stdout.decode()
         if("no entry" in output 
             or "(incomplete)" in output
-            or "no match" in output):
+            or "no match" in output
+            or "No ARP Entries" in output):
             return "N/A"
         else:
             # Strip MAC Address
