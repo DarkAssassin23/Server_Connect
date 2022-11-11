@@ -648,6 +648,23 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif("-" not in sys.argv[1]):
+        print("connecting...")
+        
+        try:
+            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
+        except:
+            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
+                  " the list of connections and try again")
+        print("closing connection...")
+        exit()
+
+    elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    # elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
+    #     print("Error: Too many arguments given, type connect -h for help")
+    #     exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         print("Error: No user and domain given, type connect -h for help")
         exit()
