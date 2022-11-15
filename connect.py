@@ -352,13 +352,9 @@ def scp(command):
          print("Error: Invalid formating of server connection. It should look like [connection]:/path/to/file")
          exit()
     else: 
-        if(" " in command[indexLocationOfFiles][:colon]):
-            reverse = command[indexLocationOfFiles][:colon]
-            spaceIndex = len(command[indexLocationOfFiles][:colon]) - reverse.index(" ")
-        else:
-            spaceIndex = 0
+        nameWithExtras = command[indexLocationOfFiles][:colon].split()
+        nameOfConnection = nameWithExtras[len(nameWithExtras)-1]
         
-        nameOfConnection = command[indexLocationOfFiles][spaceIndex:colon].strip()
     try:
         command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection+":", connections[nameOfConnection][0]+":",1)
         additionalCommands = connections[nameOfConnection][1]
