@@ -7,14 +7,20 @@
 #######################################################################
 
 import os
+homeDirSSH = os.path.expanduser("~/.ssh")
 
-# Deletes connect from /usr/local/bin and connections.txt
+connectionsFiles = [homeDirSSH+'/connections.txt', homeDirSSH+'/connections.dat', homeDirSSH+'/connections.txt.bak']
+successfullyRemoved = []
+
+# Deletes connect from /usr/local/bin and connections.txt/.dat/txt.bak
 # from the ~/.ssh folder and verifies they both have been
 # sucessfully deleted
-homeDirSSH = os.path.expanduser("~/.ssh")
 os.system("sudo rm -rf /usr/local/bin/connect")
-os.system("rm "+homeDirSSH+"/connections.txt")
-if(not (os.path.isfile("/usr/local/bin/connect") and os.path.isfile(homeDirSSH+"/connections.txt"))):
+for f in connectionsFiles:
+    os.system("rm -rf "+f)
+    successfullyRemoved.append(os.path.isfile(f))
+
+if(not (os.path.isfile("/usr/local/bin/connect") and all(successfullyRemoved))):
     print("Server Connect uninstalled sucessfully")
 else:
     print("An error occured")
