@@ -354,7 +354,7 @@ def scp(command):
     else: 
         nameWithExtras = command[indexLocationOfFiles][:colon].split()
         nameOfConnection = nameWithExtras[len(nameWithExtras)-1]
-        
+               
     try:
         command[indexLocationOfFiles] = command[indexLocationOfFiles].replace(nameOfConnection+":", connections[nameOfConnection][0]+":",1)
         additionalCommands = connections[nameOfConnection][1]
