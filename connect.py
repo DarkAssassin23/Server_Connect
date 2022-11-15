@@ -8,6 +8,7 @@ else:
     import readline
 
 version = "3.0"
+copyrightYear = "2022"
 whiteSpace = ' '
 connections = {}
 # Sets the directory of connect.py
@@ -160,6 +161,10 @@ def printHelp():
         (whiteSpace*4, whiteSpace*13, whiteSpace*29))
     print("%sEx. connect -U\n" % (whiteSpace*29))
 
+    print("%s-i,--info%sPrints out information about Server Connect\n%ssuch as version number and copyright information" % 
+        (whiteSpace*4, whiteSpace*16, whiteSpace*29))
+    print("%sEx. connect -l\n" % (whiteSpace*29))
+
     print("%s--version%sShows what version of Server Connect you're\n%srunning" % 
         (whiteSpace*4, whiteSpace*16, whiteSpace*29))
     print("%sEx. connect --version\n" % (whiteSpace*29))
@@ -168,6 +173,11 @@ def printHelp():
         (whiteSpace*4, whiteSpace*21, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect -scp \"Documents/data.txt nas:~/Data\"" % (whiteSpace*29))
     print("%sEx. connect -scp \"-r\" \"Documents/Data/ nas:~/Data\"\n"  % (whiteSpace*29))
+
+    print("%s-ping%sPings the domain/ip of the given connection.\n%sOptionally, you can pass a number for the number\n%sof ICMP packets to send." % 
+        (whiteSpace*4, whiteSpace*20, whiteSpace*29, whiteSpace*29))
+    print("%sEx. connect -ping nas" % (whiteSpace*29))
+    print("%sEx. connect -ping nas 7\n" % (whiteSpace*29))
 
     print("%s-wol%sSends a Wake-on-LAN signal to the given connection" % 
         (whiteSpace*4, whiteSpace*21))
@@ -226,6 +236,11 @@ def viewSingleConnection(connName):
 def listConnections():
     for k in connections.keys():
         print(k)
+
+def printInfo(full = False):
+    print("Server Connect version "+version)
+    if(full):
+        print(f"Copyright (C) {copyrightYear} Dark Assassins Inc.")
 
 # Makes sure the username and domain combo
 # is formated correctly
@@ -387,11 +402,25 @@ def updatePartial(name, flag, sectionToUpdate):
 # Ping the remote host, based on the given IP, to 
 # ensure the host is in the ARP table, if it is 
 # on the same LAN, and or, responding to pings
-def pingHost(ip):
-    cmd = ['ping', '-c', '1', '-t', '1', ip]
-    process = Popen(cmd, stdout=PIPE, stderr=PIPE)
-    stdout, stderr = process.communicate()
-    return process.returncode == 0 # code=0 means available
+def pingHost(ip, numPings = 0):
+    try:
+        if(numPings==0):
+            cmd = ['ping', '-c', '1', '-t', '1', ip]
+            process = Popen(cmd, stdout=PIPE, stderr=PIPE)
+            stdout, stderr = process.communicate()
+            return process.returncode == 0 # code=0 means available
+        elif(numPings>0):
+            numPingsFlag = '-c'
+            if(platform.system()=="Windows"):
+                numPingsFlag = '-n'
+            os.system('ping '+numPingsFlag+' '+str(numPings)+' '+ip)
+        else:
+            if(platform.system()=="Windows"):
+                os.system("ping -t "+ip)
+            else:
+                os.system("ping "+ip)
+    except KeyboardInterrupt:
+        print("\nStopping ping...")
 
 # Dynamically pull MAC Address of the given IP from
 # the systems ARP table
@@ -566,7 +595,10 @@ if(len(sys.argv)==2):
         listConnections()
         exit()
     elif(sys.argv[1]=="--version"):
-        print("Server Connect version "+version)
+        printInfo()
+        exit()
+    elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
+        printInfo(True)
         exit()
     elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
         upgrade()
@@ -604,6 +636,9 @@ if(len(sys.argv)==2):
     elif(sys.argv[1]=="-wol"):
         print("Error: No connection given to send the Wake-on-LAN signal to. Type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-ping"):
+        print("Error: No connection given to send a ping to. Type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
         print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
         exit()
@@ -634,19 +669,11 @@ if(len(sys.argv)==3):
         else:
             print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
-    elif("-" not in sys.argv[1]):
-        print("connecting...")
-        
-        try:
-            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
-        except:
-            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
-                  " the list of connections and try again")
-        print("closing connection...")
-        exit()
-
-    elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-        print("Error: Too many arguments given, type connect -h for help")
+    elif(sys.argv[1]=="-ping"):
+        if(sys.argv[2] in connections):
+            pingHost(connections[sys.argv[2]][0].split("@")[1], -1)
+        else:
+            print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
     elif("-" not in sys.argv[1]):
         print("connecting...")
@@ -662,9 +689,20 @@ if(len(sys.argv)==3):
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
-    # elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-    #     print("Error: Too many arguments given, type connect -h for help")
-    #     exit()
+    elif("-" not in sys.argv[1]):
+        print("connecting...")
+        
+        try:
+            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
+        except:
+            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
+                  " the list of connections and try again")
+        print("closing connection...")
+        exit()
+
+    elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
         print("Error: No user and domain given, type connect -h for help")
         exit()
@@ -678,6 +716,9 @@ if(len(sys.argv)==3):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
@@ -715,6 +756,15 @@ if(len(sys.argv)==4):
         else:
             print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
+    elif(sys.argv[1]=="-ping"):
+        if(sys.argv[2] in connections):
+            if(sys.argv[3].isdigit()):
+                pingHost(connections[sys.argv[2]][0].split("@")[1], int(sys.argv[3]))
+            else:
+                print(f"Error: '{sys.argv[3]}' is not an integer")
+        else:
+            print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
+        exit()
     elif(sys.argv[1]=="-uu" or sys.argv[1]=="--update-user"):
         updatePartial(sys.argv[2], "-uu", sys.argv[3])
         exit()
@@ -738,6 +788,9 @@ if(len(sys.argv)==4):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="--version"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
@@ -778,6 +831,9 @@ if(len(sys.argv)==5):
     elif(sys.argv[1]=="--version"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
+    elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
     elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
@@ -788,6 +844,9 @@ if(len(sys.argv)==5):
         print("Error: Too many arguments given. Type connect -h for help")
         exit()
     elif(sys.argv[1]=="-wol"):
+        print("Error: Too many arguments given, type connect -h for help")
+        exit()
+    elif(sys.argv[1]=="-ping"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif(sys.argv[1]=="-scp"):
