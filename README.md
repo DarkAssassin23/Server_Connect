@@ -149,9 +149,9 @@ ssh connecitons. Below is a list of the supported commands and functionality
                 		and will automatically update for you
                 		Ex. connect -U
 
-	-i,--info                Prints out information about Server Connect
-                             such as version number and copyright information
-                             Ex. connect -l
+	-i,--info               Prints out information about Server Connect
+                             	such as version number and copyright information
+                             	Ex. connect -l
 
 	--version		Shows what version of Server Connect you're
 				running
@@ -163,11 +163,11 @@ ssh connecitons. Below is a list of the supported commands and functionality
                 		Ex. connect -scp "Documents/data.txt nas:~/Data"
                 		Ex. connect -scp "-r" "Documents/Data/ nas:~/Data"	
 		
-	-ping                    Pings the domain/ip of the given connection.
-                             Optionally, you can pass a number for the number
-                             of ICMP packets to send.
-                             Ex. connect -ping nas
-                             Ex. connect -ping nas 7
+	-ping                   Pings the domain/ip of the given connection.
+                             	Optionally, you can pass a number for the number
+                             	of ICMP packets to send.
+                             	Ex. connect -ping nas
+                             	Ex. connect -ping nas 7
 
 	-wol                    Sends a Wake-on-LAN signal to the given connection
                              	Ex. connect -wol [name]
