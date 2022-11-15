@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 3.0<br />
-**Published Date:** 11/10/2022
+**Version:** 3.1<br />
+**Published Date:** 11/14/2022
 
 ## Table of Contents
 * [General Usage](#general-usage-notes)
@@ -105,7 +105,6 @@ ssh connecitons. Below is a list of the supported commands and functionality
 	-l,--list		Lists the names of all your connections
 				Ex. connect -l
 
-
 	-a,--add 		Adds a new connection to your list of current 
 				connections with any additional ssh flags
 				Ex. connect -a [name] [user]@[domain]
@@ -149,7 +148,11 @@ ssh connecitons. Below is a list of the supported commands and functionality
 	-U,--upgrade        	Checks to see if there is a newer version and
                 		and will automatically update for you
                 		Ex. connect -U
-				
+
+	-i,--info                Prints out information about Server Connect
+                             such as version number and copyright information
+                             Ex. connect -l
+
 	--version		Shows what version of Server Connect you're
 				running
 				Ex. connect --version	
@@ -159,7 +162,13 @@ ssh connecitons. Below is a list of the supported commands and functionality
                 		of your connections
                 		Ex. connect -scp "Documents/data.txt nas:~/Data"
                 		Ex. connect -scp "-r" "Documents/Data/ nas:~/Data"	
-	
+		
+	-ping                    Pings the domain/ip of the given connection.
+                             Optionally, you can pass a number for the number
+                             of ICMP packets to send.
+                             Ex. connect -ping nas
+                             Ex. connect -ping nas 7
+
 	-wol                    Sends a Wake-on-LAN signal to the given connection
                              	Ex. connect -wol [name]
                              	Ex. connect -wol plex_server
