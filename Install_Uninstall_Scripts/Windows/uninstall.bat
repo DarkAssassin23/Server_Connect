@@ -32,6 +32,8 @@ If NOT "%UserPath%"=="%Replaced%" (
 echo Removing Files...
 if exist "%userprofile%\.ssh\connect.*" del /q "%userprofile%\.ssh\connect.*"
 if exist "%userprofile%\.ssh\connections.txt" del /q "%userprofile%\.ssh\connections.txt"
+if exist "%userprofile%\.ssh\connections.txt.bak" del /q "%userprofile%\.ssh\connections.txt.bak"
+if exist "%userprofile%\.ssh\connections.dat" del /q "%userprofile%\.ssh\connections.dat"
 echo Server Connect was successfully uninstalled
 goto end
 
