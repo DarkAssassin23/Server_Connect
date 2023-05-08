@@ -7,8 +7,8 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "3.1"
-copyrightYear = "2022"
+version = "3.1.1"
+copyrightYear = "2023"
 whiteSpace = ' '
 connections = {}
 # Sets the directory of connect.py
