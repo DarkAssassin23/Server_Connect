@@ -163,7 +163,7 @@ def printHelp():
 
     print("%s-i,--info%sPrints out information about Server Connect\n%ssuch as version number and copyright information" % 
         (whiteSpace*4, whiteSpace*16, whiteSpace*29))
-    print("%sEx. connect -l\n" % (whiteSpace*29))
+    print("%sEx. connect -i\n" % (whiteSpace*29))
 
     print("%s--version%sShows what version of Server Connect you're\n%srunning" % 
         (whiteSpace*4, whiteSpace*16, whiteSpace*29))

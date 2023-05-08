@@ -151,7 +151,7 @@ ssh connecitons. Below is a list of the supported commands and functionality
 
 	-i,--info               Prints out information about Server Connect
                              	such as version number and copyright information
-                             	Ex. connect -l
+                             	Ex. connect -i
 
 	--version		Shows what version of Server Connect you're
 				running
