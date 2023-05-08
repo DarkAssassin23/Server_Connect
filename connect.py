@@ -436,24 +436,27 @@ def getMAC(ip):
             or "No ARP Entries" in output):
             return "N/A"
         else:
-            # Strip MAC Address
-            for x in output.split():
-                if(re.match("[0-9a-f]{1,2}([-:])[0-9a-f]{1,2}(\\1[0-9a-f]{1,2}){4}$", x.lower())):
-                    mac = x.replace("-",":")
-                    break
-            # Check to see if any octets are missing a leading 0
-            if(len(mac)<17):
-                octets = mac.split(":")
-                mac = ""
-                for o in octets:
-                    # If current octet is missing a leading 0
-                    # add it
-                    if(not len(o) == 2):
-                        mac += "0"
-                    mac += o+":"
-                # Remove the extra ':' at the end
-                mac = mac[:len(mac)-1]
-            return mac
+            try:
+                # Strip MAC Address
+                for x in output.split():
+                    if(re.match("[0-9a-f]{1,2}([-:])[0-9a-f]{1,2}(\\1[0-9a-f]{1,2}){4}$", x.lower())):
+                        mac = x.replace("-",":")
+                        break
+                # Check to see if any octets are missing a leading 0
+                if(len(mac)<17):
+                    octets = mac.split(":")
+                    mac = ""
+                    for o in octets:
+                        # If current octet is missing a leading 0
+                        # add it
+                        if(not len(o) == 2):
+                            mac += "0"
+                        mac += o+":"
+                    # Remove the extra ':' at the end
+                    mac = mac[:len(mac)-1]
+                return mac
+            except:
+                pass
     return "N/A"
 
 # Checks to see if the given MAC Address is valid
