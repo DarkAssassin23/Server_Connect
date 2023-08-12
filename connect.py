@@ -859,4 +859,12 @@ if(len(sys.argv)==5):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
 else:
-    print("Error: unrecognized command, type connect -h for help")
+    # A catch incase the connection has a '-' in it
+    if(sys.argv[1] in connections):
+        cmd = f"ssh {connections[sys.argv[1]][0]} {connections[sys.argv[1]][1]}"
+        if(len(sys.argv) > 2):
+            cmd += f" {sys.argv[2]}"
+        print("connecting...")
+        os.system(cmd)
+    else:
+        print("Error: unrecognized command, type connect -h for help")
