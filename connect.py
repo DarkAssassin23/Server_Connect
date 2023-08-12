@@ -102,10 +102,11 @@ def printHelp():
     print("Server Connect allows you to easily connect to "+
         "and manage all your \nssh connections. Below is a list of the supported commands and functionality\n")
 
-    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes" % 
-        (whiteSpace*4, whiteSpace*19, whiteSpace*29, whiteSpace*29))
+    print("%s[name]%sName of one of your connections you're trying to\n%sconnect to. Additionaly, you can append regular ssh\n%sflags in quotes. You can also just enter a\n%snormal ssh command with the flags in quotes." % 
+        (whiteSpace*4, whiteSpace*19, whiteSpace*29, whiteSpace*29, whiteSpace*29))
     print("%sEx. connect vpn_server" % (whiteSpace*29))
-    print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"\n" % (whiteSpace*29))
+    print("%sEx. connect vpn_server \"-i ~/.ssh/id_rsa -p 2653\"" % (whiteSpace*29))
+    print("%sEx. connect vpn@192.168.54.78 \"-p 2653\"\n" % (whiteSpace*29))
 
     print("%s-h,--help%sBrings up the list of commands" % (whiteSpace*4, whiteSpace*16))
     print("%sEx. connect -h\n" % (whiteSpace*29))

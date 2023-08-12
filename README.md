@@ -26,6 +26,16 @@ connections.
 - As of version 2.0, any new software updates can be downloaded and installed through the
 CLI itself without having to download and install a new version yourself
 - As of version 3.0, this software also has support to send Wake-on-LAN signals to connections
+- As of version 3.2, this software also has support for direct ssh commands in addtion to names
+of connections
+  - This allows you to now do the following: 
+```bash
+connect user@server.local
+# or with ssh flags 
+connect admin@10.34.79.123 "-v -p 43731"
+```
+- As of version 3.2, this software also has support for connection names to include hyphens
+  - Ex. `vpn-server`
 
 ---------
 
@@ -76,13 +86,13 @@ Utilizing Server Connect
 
 Once the installation is complete, to get help on all of the commands and what they 
 do type 
-
+```bash
 	connect -h
-
+```
 or
-
+```bash
 	connect --help
-
+```
 This will display the follwing man page style menu
 ```
 Server Connect allows you to easily connect to and manage all your 
@@ -90,9 +100,11 @@ ssh connecitons. Below is a list of the supported commands and functionality
 
 	[name] 			Name of one of your connections your trying to
 				connect to. Additionaly, you can append regular ssh
-                		flags in quotes
+                		flags in quotes. You can also just enter a
+						normal ssh command with the flags in quotes.
 				Ex. connect vpn_server
 				Ex. connect vpn_server "-i ~/.ssh/id_rsa -p 2653"
+				Ex. connect vpn@192.168.54.78 "-p 2653"
 
 	-h,--help		Brings up the list of commands
 				Ex. connect -h
