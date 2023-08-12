@@ -573,6 +573,29 @@ def WOL(macAddress):
     # Close socket
     sock.close()
 
+def connectToServer():
+    print("connecting...")
+    # Return code
+    rc = -1
+    extraFlags = ""
+    if(len(sys.argv) > 2):
+        extraFlags = sys.argv[2]
+
+    if(sys.argv[1] in connections):
+        cmd = f"ssh {connections[sys.argv[1]][0]} {connections[sys.argv[1]][1]} {extraFlags}"
+        rc = os.system(cmd)
+
+    else:
+        if(len(sys.argv[1].split('@')) == 2):
+            cmd = f"ssh {sys.argv[1]} {extraFlags}"
+            rc = os.system(cmd)
+    
+    # If the return code is not 0, we encountered an error
+    if(rc != 0):
+        print(f"Unable to connect to: \"{sys.argv[1]}\"\nMake sure it is in"+
+                    " the list of connections and try again")
+        print("Alternatively you can try [username]@[ip/domain]")
+
 # Makes sure the proper number of arguments were given
 if(len(sys.argv)<2 or len(sys.argv)>5):
     print("Invalid number of arguments, type connect -h for help")
@@ -603,14 +626,7 @@ if(len(sys.argv)==2):
         upgrade()
         exit()
     elif("-" not in sys.argv[1]):
-        print("connecting...")
-        
-        try:
-            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1])
-        except:
-            print("Unable to connect to: \""+sys.argv[1]+"\"\nMake sure it is in"+
-                  " the list of connections and try again")
-        print("closing connection...")
+        connectToServer()
         exit()
     
     elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
@@ -675,28 +691,14 @@ if(len(sys.argv)==3):
             print(f"Error: '{sys.argv[2]}' does not exist in your connections.txt file")
         exit()
     elif("-" not in sys.argv[1]):
-        print("connecting...")
-        
-        try:
-            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
-        except:
-            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
-                  " the list of connections and try again")
-        print("closing connection...")
+        connectToServer()
         exit()
 
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
         print("Error: Too many arguments given, type connect -h for help")
         exit()
     elif("-" not in sys.argv[1]):
-        print("connecting...")
-        
-        try:
-            os.system("ssh "+connections[sys.argv[1]][0]+" "+connections[sys.argv[1]][1]+" "+sys.argv[2])
-        except:
-            print("Unable to connect to: \""+sys.argv[1]+" "+sys.argv[2]+"\"\nMake sure it is in"+
-                  " the list of connections and try again")
-        print("closing connection...")
+        connectToServer()
         exit()
 
     elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
@@ -861,10 +863,6 @@ if(len(sys.argv)==5):
 else:
     # A catch incase the connection has a '-' in it
     if(sys.argv[1] in connections):
-        cmd = f"ssh {connections[sys.argv[1]][0]} {connections[sys.argv[1]][1]}"
-        if(len(sys.argv) > 2):
-            cmd += f" {sys.argv[2]}"
-        print("connecting...")
-        os.system(cmd)
+        connectToServer()
     else:
         print("Error: unrecognized command, type connect -h for help")
