@@ -7,7 +7,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "3.2"
+version = "3.2.1"
 copyrightYear = "2023"
 whiteSpace = ' '
 connections = {}
@@ -591,8 +591,8 @@ def connectToServer():
             cmd = f"ssh {sys.argv[1]} {extraFlags}"
             rc = os.system(cmd)
     
-    # If the return code is not 0, we encountered an error
-    if(rc != 0):
+    # If the return code is -1 the connection wasn't a valid connection.
+    if(rc == -1):
         print(f"Unable to connect to: \"{sys.argv[1]}\"\nMake sure it is in"+
                     " the list of connections and try again")
         print("Alternatively you can try [username]@[ip/domain]")
