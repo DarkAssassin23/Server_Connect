@@ -1,2 +1,3 @@
 #!/bin/sh
-python3 connect.py $@
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+python3 ${SCRIPT_DIR}/connect.py $@
