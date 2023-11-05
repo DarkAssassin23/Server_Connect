@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from zipfile import ZipFile
+from zipfile import ZipFile, ZIP_BZIP2
 import os, sys, shutil, platform
 
 target = "connect.py"
@@ -73,7 +73,7 @@ def zipPackage(isWindows):
 
     os.chdir(packageDir)
     files = os.listdir()
-    with ZipFile(rootDir+zipPack,'w') as zip:
+    with ZipFile(rootDir+zipPack,'w', ZIP_BZIP2, True, 9) as zip:
         for file in files:
             zip.write(file)
 
