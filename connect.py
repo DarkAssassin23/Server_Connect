@@ -7,7 +7,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "3.2.1"
+version = "3.2.2"
 copyrightYear = "2023"
 whiteSpace = ' '
 connections = {}
@@ -286,12 +286,12 @@ def delete(name):
 
 # Deletes all connections
 def deleteAll():
-    if(not(os.path.isfile(path+"/connections.txt"))):
+    if(not(os.path.isfile(path+"/connections.dat"))):
         print("There are no connections to delete")
     else:
         validate = input("Are you sure you would like to delete all your connections (y/n)? ")
         if(validate.lower()=="y" or validate.lower()=="yes"):
-            os.system("rm "+path+"/connections.txt")
+            os.system("rm "+path+"/connections.dat")
             print("Connections deleted")
         elif(validate.lower()=="n" or validate.lower()=="no"):
             print("Connections were not deleted")
