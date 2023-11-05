@@ -15,7 +15,6 @@ else:
 
 version = "4.0"
 copyrightYear = "2023"
-whiteSpace = ' '
 connections = {}
 
 def printInfo(full = False):

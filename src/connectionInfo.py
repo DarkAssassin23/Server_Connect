@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-from help import whiteSpace
+whiteSpace = ' '
+
 # Checks if there are any connections saved
 # if there are some it prints them out
 # otherwise it tells the user there are none
