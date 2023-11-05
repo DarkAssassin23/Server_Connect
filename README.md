@@ -39,6 +39,10 @@ connect admin@10.34.79.123 "-v -p 43731"
 - As of version 3.2, this software also has support for connection names to
   include hyphens
   - Ex. `vpn-server`
+- As of version 4.0, this software now pulls updates directly from the 
+  GitHub releases page. All users on version 3.2.1 or earlier will either 
+  need to run the `upgrade` command to update to 3.2.2 before running 
+  another `upgrade` to upgrade to version 4.0
 
 ---------
 
