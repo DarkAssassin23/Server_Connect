@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 3.2.1<br />
-**Published Date:** 8/19/2023
+**Version:** 4.0<br />
+**Published Date:** 11/4/2023
 
 ## Table of Contents
 * [General Usage](#general-usage-notes)
