@@ -5,6 +5,7 @@
 ## Table of Contents
 * [General Usage](#general-usage-notes)
 * [System Requirements](#system-requirements)
+* ['Building' from source](#building-from-source)
 * Installing Server Connect
     * [Windows](#windows-installation)
     * [macOS/Linux](#macoslinux-installation)
@@ -55,6 +56,33 @@ System Requirements
   - Any version of Windows older than Windows 10, or any Windows 10 version
     older than version 1803, is not supported, due to Windows lack of SSH
     support on the command line.
+________
+
+'Building' From Source
+----------
+This is Python after all, so there is no building and compiling. However, 
+with Server Connect 4.0, it is no longer a single script. It has been 
+broken up into modules. For minimal changes to be needed to install and
+uninstall scripts, as well as the upgrade process, rather than having 
+the user run the `__main__.py` file, all of the source files will now 
+be joined together to form the `connect.py` that is now in the releases. 
+This file can be created by running the `buildServerConnect.py` script.
+
+To do this, simply clone this repo, cd into it, and run the build script.
+```bash
+./buildServerConnect.py
+# Or
+python3 buildServerConnect.py
+```
+
+To install your newly 'built' version of Server Connect, copy the install
+script for your respective OS's directory in the 
+`Install_Uninstall_Scripts` directory. Once you've done that, follow the
+instructions below for installing on [Windows](#windows-installation),
+[macOS, or Linux](#macoslinux-installation). Of course, you can ignore
+the parts about downloading the latest version from the releases page 
+since you just cloned this repo and built the latest version.
+
 ________
 
 Windows Installation
