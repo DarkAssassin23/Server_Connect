@@ -6,10 +6,10 @@ target = "connect.py"
 rootDir = os.path.dirname(os.path.realpath(__file__)) + "/"
 srcDir = rootDir+"src"
 
-winPackage = "Server_Connect-Windows"
+winPackage = rootDir+"Server_Connect-Windows"
 winPackageZip = winPackage + ".zip"
 
-unixPackage = "Server_Connect-macOS_Linux"
+unixPackage = rootDir+"Server_Connect-macOS_Linux"
 unixPackageZip = unixPackage + ".zip"
 
 
@@ -73,7 +73,7 @@ def zipPackage(isWindows):
 
     os.chdir(packageDir)
     files = os.listdir()
-    with ZipFile(rootDir+zipPack,'w', ZIP_BZIP2, True, 9) as zip:
+    with ZipFile(zipPack,'w', ZIP_BZIP2, True, 9) as zip:
         for file in files:
             zip.write(file)
 
@@ -84,6 +84,16 @@ def zipAll():
     zipPackage(True)
     zipPackage(False)
 
+def installServerConnect(isWindows):
+    packageDir = unixPackage
+    installCMD = "./install"
+    if(isWindows):
+        packageDir = winPackage
+        installCMD = "install.bat"
+
+    os.chdir(packageDir)
+    os.system(installCMD)
+    os.chdir(rootDir)
 
 def clean():
     objsToRemove = [
@@ -119,6 +129,8 @@ def printHelp():
 
     zip-all         Create zips for both Windows and Unix
 
+    install         Installs Server Connect
+
     clean           Remove the package bundles, zip's, and connect.py
     ''')
 
@@ -129,6 +141,7 @@ if __name__ == "__main__":
 
     if(len(sys.argv) == 2):
         arg = sys.argv[1].lower()
+        isWindows = platform.system() == "Windows"
         if(arg == "-h" or arg == "--help" or arg == "help"):
             printHelp()
             exit()
@@ -140,7 +153,7 @@ if __name__ == "__main__":
             exit()
         elif(arg == "package"):
             build()
-            package(platform.system() == "Windows")
+            package(isWindows)
             exit()
         elif(arg == "package-all"):
             build()
@@ -148,13 +161,18 @@ if __name__ == "__main__":
             exit()
         elif(arg == "zip"):
             build()
-            package(platform.system() == "Windows")
-            zipPackage(platform.system() == "Windows")
+            package(isWindows)
+            zipPackage(isWindows)
             exit()
         elif(arg == "zip-all"):
             build()
             packageAll()
             zipAll()
+            exit()
+        elif(arg == "install"):
+            build()
+            package(isWindows)
+            installServerConnect(isWindows)
             exit()
 
     print(f"Unrecognized rule \'{sys.argv[1]}\'")

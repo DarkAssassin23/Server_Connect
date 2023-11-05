@@ -76,21 +76,13 @@ python3 buildServerConnect.py
 ```
 
 The easiest way to install Server Connect from source is running the 
-following commands:
+`buildServerConnect.py` script with the `install` option.
 ```bash
-python3 buildServerConnect.py package
-# Windows
-cd Server_Connect-Windows
-install.bat
-# macOS or Linux
-cd Server_Connect-macOS_Linux
-./install
+python3 buildServerConnect.py install
 ```
 
-What this does is build the `connect.py` file and bundle it together with
-the corresponding run, install, and uninstall scripts for your OS. Then, 
-it navigates you to the folder it created and runs the install script, to
-install Server Connect
+This will build the `connect.py` file then install Server Connect 
+automatically for you.
 
 ________
 
