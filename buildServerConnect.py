@@ -4,7 +4,7 @@ import os, sys, shutil, platform
 
 target = "connect.py"
 rootDir = os.path.dirname(os.path.realpath(__file__)) + "/"
-srcDir = "src"
+srcDir = rootDir+"src"
 
 winPackage = "Server_Connect-Windows"
 winPackageZip = winPackage + ".zip"
