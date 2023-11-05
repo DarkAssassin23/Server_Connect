@@ -1,15 +1,18 @@
 #!/usr/bin/env python3
 from zipfile import ZipFile
-import os, sys
+import os, sys, shutil
 
 target = "connect.py"
+rootDir = os.path.dirname(os.path.realpath(__file__))
 srcDir = "src"
 
 def build():
-    files = os.listdir(srcDir)
+    os.chdir(srcDir)
+    files = os.listdir()
     with ZipFile(target,'w') as zip:
         for file in files:
-            zip.write(f"{srcDir}/{file}")
+            zip.write(file)
+    shutil.move(target, f"{rootDir}/{target}")
 
 def clean():
     os.remove(target)
