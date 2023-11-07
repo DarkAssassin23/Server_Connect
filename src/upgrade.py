@@ -9,6 +9,8 @@ apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases/la
 baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
 baseFilename = "Server_Connect-"
 
+# Get the current latest release for Server Connect from the
+# GitHub API
 def getLatestRelease():
     try:
         info = json.loads(get(apiURL).text)
@@ -18,6 +20,7 @@ def getLatestRelease():
     latest = info["tag_name"].replace("v", "").strip()
     return latest
 
+# Download the latest version, extract it, and install it
 def updateServerConnect(version, isWindows):
     global baseFilename
     if(isWindows):
@@ -68,6 +71,7 @@ def updateServerConnect(version, isWindows):
 
     print(f"Update to version {version} was successful")
 
+# Prompt the user if they want to view the release notes, if so display them
 def getReleaseNotes():
     choice = input("Would you like to view the release notes? (y/n) ")
     if(not choice.lower() == "y"):
