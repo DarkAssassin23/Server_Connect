@@ -4,7 +4,6 @@ import os, zipfile, shutil, platform, json
 import fileHandling as fh
 from fileHandling import path
 
-# Sets the directory of connect.py
 apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases/latest"
 baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
 baseFilename = "Server_Connect-"
