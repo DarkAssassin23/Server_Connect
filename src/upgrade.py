@@ -1,11 +1,53 @@
 #!/usr/bin/env python3
 from requests import get
-import os
+import os, zipfile, shutil, platform
 import fileHandling as fh
 from fileHandling import path
 
 # Sets the directory of connect.py
-#path = fh.path# os.path.expanduser("~")+"/.ssh"
+baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
+baseFilename = "Server_Connect-"
+
+def getLatestRelease():
+    latest = get("https://github.com/DarkAssassin23/Server_Connect/releases/latest").text
+    latest = latest[latest.find("<title>"):latest.find("</title>")].replace("Server Connect", "")
+    releaseStart = latest.find("v") + 1
+    latest = latest[releaseStart:].split(" ")
+    latest = latest[0].strip()
+    return latest
+
+def updateServerConnect(version, isWindows):
+    global baseFilename
+    if(isWindows):
+        baseFilename += "Windows"
+    else:
+        baseFilename += "macOS_Linux"
+    zipName = baseFilename + ".zip"
+
+    zip = get(f"{baseDownloadURL}v{version}/{zipName}")
+    with open(zipName, 'wb') as f:
+        f.write(zip.content)
+
+    with zipfile.ZipFile(zipName, 'r') as zip_ref:
+        zip_ref.extractall()
+
+    print("Installing new version")
+    os.chdir(baseFilename)
+    if(isWindows):
+        shutil.move("connect.py", f"{path}/")
+        shutil.move("connect.bat", f"{path}/")
+    else:
+        dest = "/usr/local/bin/"
+        os.system(f"sudo mv connect.py {dest} && sudo mv connect.sh {dest}/connect") 
+        os.system(f"sudo chown -R $(whoami) {dest}connect && chmod +x {dest}connect")
+    os.chdir("..")
+
+    os.remove(zipName) 
+    shutil.rmtree(baseFilename)
+    if(os.path.isdir("__MACOSX")):
+        shutil.rmtree("__MACOSX")
+
+    print(f"Update to version {version} was successful")
 
 # Reaches out to check and see if there are any
 # new versions of Server Connect. If so, it will
@@ -13,23 +55,20 @@ from fileHandling import path
 # If they do, the new version will be downloaded and
 # installed
 def upgrade(version):
-    try:
-        globalVersion = get("https://darkassassinsinc.com/software/server-connect/version.txt").text
-        if(globalVersion>version):
-            response = input("There is a new version available: version "+globalVersion+"\nWould you like to update? (y/n) ")
-            if(response.lower()=="y" or response.lower()=="yes"):
-                try:
-                    update = get("https://darkassassinsinc.com/software/server-connect/connect.py")
-                    open(path+"/connect.py", 'wb').write(update.content)
-                    if(platform.system() != "Windows"):
-                        os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
-                    print("Update to version "+globalVersion+" was successful")
-                except:
-                    print("Error: Update failed")
+    latestVersion = getLatestRelease()
+    #Testing
+    version = "2.0"
+    if(version >= latestVersion):
+        print("You are up to date!")
+        exit(0)
 
-            else:
-                print("Update not downloaded")
-        else:
-            print("You are up to date!")
-    except:
-        print("Error: Unable to check for updates at this time...")
+    print(f"Current Version: {version}")
+    print(f"Latest Version:  {latestVersion}")
+    print("A new version is available")
+
+    choice = input("Would you like to update? (y/n) ")
+    if(choice.lower() == "y"):
+        isWindows = platform.system() == "Windows"
+        updateServerConnect(latestVersion, isWindows)
+    else:
+        print("Update skipped")
