@@ -1,23 +1,21 @@
 #!/usr/bin/env python3
 from requests import get
-import os, zipfile, shutil, platform
+import os, zipfile, shutil, platform, json
 import fileHandling as fh
 from fileHandling import path
 
 # Sets the directory of connect.py
+apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases/latest"
 baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
 baseFilename = "Server_Connect-"
 
 def getLatestRelease():
     try:
-        latest = get("https://github.com/DarkAssassin23/Server_Connect/releases/latest").text
+        info = json.loads(get(apiURL).text)
     except:
         print("Error: Unable to check for updates at this time...")
         exit()
-    latest = latest[latest.find("<title>"):latest.find("</title>")].replace("Server Connect", "")
-    releaseStart = latest.find("v") + 1
-    latest = latest[releaseStart:].split(" ")
-    latest = latest[0].strip()
+    latest = info["tag_name"].replace("v", "").strip()
     return latest
 
 def updateServerConnect(version, isWindows):
@@ -70,6 +68,18 @@ def updateServerConnect(version, isWindows):
 
     print(f"Update to version {version} was successful")
 
+def getReleaseNotes():
+    choice = input("Would you like to view the release notes? (y/n) ")
+    if(not choice.lower() == "y"):
+        return
+    try:
+        info = json.loads(get(apiURL).text)
+    except:
+        print("Error: Unable to download release notes")
+        exit()
+
+    print(info["body"])
+
 # Reaches out to check and see if there are any
 # new versions of Server Connect. If so, it will
 # prompt the user if they would like to update.
@@ -77,7 +87,6 @@ def updateServerConnect(version, isWindows):
 # installed
 def upgrade(version):
     latestVersion = getLatestRelease()
-
     if(version >= latestVersion):
         print("You are up to date!")
         exit(0)
@@ -90,5 +99,6 @@ def upgrade(version):
     if(choice.lower() == "y"):
         isWindows = platform.system() == "Windows"
         updateServerConnect(latestVersion, isWindows)
+        getReleaseNotes()
     else:
         print("Update skipped")
