@@ -9,7 +9,11 @@ baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/dow
 baseFilename = "Server_Connect-"
 
 def getLatestRelease():
-    latest = get("https://github.com/DarkAssassin23/Server_Connect/releases/latest").text
+    try:
+        latest = get("https://github.com/DarkAssassin23/Server_Connect/releases/latest").text
+    except:
+        print("Error: Unable to check for updates at this time...")
+        exit()
     latest = latest[latest.find("<title>"):latest.find("</title>")].replace("Server Connect", "")
     releaseStart = latest.find("v") + 1
     latest = latest[releaseStart:].split(" ")
@@ -24,28 +28,45 @@ def updateServerConnect(version, isWindows):
         baseFilename += "macOS_Linux"
     zipName = baseFilename + ".zip"
 
-    zip = get(f"{baseDownloadURL}v{version}/{zipName}")
-    with open(zipName, 'wb') as f:
-        f.write(zip.content)
+    try:
+        zip = get(f"{baseDownloadURL}v{version}/{zipName}")
+    except:
+        print("Error: Failed to download the update")
+        exit()
 
-    with zipfile.ZipFile(zipName, 'r') as zip_ref:
-        zip_ref.extractall()
+    try:
+        with open(zipName, 'wb') as f:
+            f.write(zip.content)
+    except:
+        print("Error: Download succeeded, but failed to write the file to disk")
+        exit()
+
+    try:
+        with zipfile.ZipFile(zipName, 'r') as zip_ref:
+            zip_ref.extractall()
+    except:
+        print("Error: Failed to extract the update")
+        exit()
 
     print("Installing new version")
-    os.chdir(baseFilename)
-    if(isWindows):
-        shutil.move("connect.py", f"{path}/")
-        shutil.move("connect.bat", f"{path}/")
-    else:
-        dest = "/usr/local/bin/"
-        os.system(f"sudo mv connect.py {dest} && sudo mv connect.sh {dest}/connect") 
-        os.system(f"sudo chown -R $(whoami) {dest}connect && chmod +x {dest}connect")
-    os.chdir("..")
+    try:
+        os.chdir(baseFilename)
+        if(isWindows):
+            shutil.move("connect.py", f"{path}/")
+            shutil.move("connect.bat", f"{path}/")
+        else:
+            dest = "/usr/local/bin/"
+            os.system(f"sudo mv connect.py {dest} && sudo mv connect.sh {dest}/connect") 
+            os.system(f"sudo chown -R $(whoami) {dest}connect && chmod +x {dest}connect")
+        os.chdir("..")
 
-    os.remove(zipName) 
-    shutil.rmtree(baseFilename)
-    if(os.path.isdir("__MACOSX")):
-        shutil.rmtree("__MACOSX")
+        os.remove(zipName) 
+        shutil.rmtree(baseFilename)
+        if(os.path.isdir("__MACOSX")):
+            shutil.rmtree("__MACOSX")
+    except:
+        print("Error: Failed to install the update")
+        exit()
 
     print(f"Update to version {version} was successful")
 
@@ -56,8 +77,7 @@ def updateServerConnect(version, isWindows):
 # installed
 def upgrade(version):
     latestVersion = getLatestRelease()
-    #Testing
-    version = "2.0"
+
     if(version >= latestVersion):
         print("You are up to date!")
         exit(0)
