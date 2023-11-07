@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import os, sys, platform, socket, re, shutil
+import os, sys, platform, socket, re, shutil, json, zipfile
 from requests import get
 from subprocess import Popen, PIPE
 if(platform.system() == "Windows"):
@@ -7,6 +7,10 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
+
+apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases/latest"
+baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
+baseFilename = "Server_Connect-"
 version = "3.2.2"
 copyrightYear = "2023"
 whiteSpace = ' '
@@ -312,32 +316,99 @@ def rename(oldName, newName):
     else:
         print("Error: that connection does not exist")
 
+def getLatestRelease():
+    try:
+        info = json.loads(get(apiURL).text)
+    except:
+        print("Error: Unable to check for updates at this time...")
+        exit()
+    latest = info["tag_name"].replace("v", "").strip()
+    return latest
+
+def updateServerConnect(version, isWindows):
+    global baseFilename
+    if(isWindows):
+        baseFilename += "Windows"
+    else:
+        baseFilename += "macOS_Linux"
+    zipName = baseFilename + ".zip"
+
+    try:
+        zip = get(f"{baseDownloadURL}v{version}/{zipName}")
+    except:
+        print("Error: Failed to download the update")
+        exit()
+
+    try:
+        with open(zipName, 'wb') as f:
+            f.write(zip.content)
+    except:
+        print("Error: Download succeeded, but failed to write the file to disk")
+        exit()
+
+    try:
+        with zipfile.ZipFile(zipName, 'r') as zip_ref:
+            zip_ref.extractall()
+    except:
+        print("Error: Failed to extract the update")
+        exit()
+
+    print("Installing new version")
+    try:
+        os.chdir(baseFilename)
+        if(isWindows):
+            shutil.move("connect.py", f"{path}/")
+            shutil.move("connect.bat", f"{path}/")
+        else:
+            dest = "/usr/local/bin/"
+            os.system(f"sudo mv connect.py {dest} && sudo mv connect.sh {dest}/connect") 
+            os.system(f"sudo chown -R $(whoami) {dest}connect && chmod +x {dest}connect")
+        os.chdir("..")
+
+        os.remove(zipName) 
+        shutil.rmtree(baseFilename)
+        if(os.path.isdir("__MACOSX")):
+            shutil.rmtree("__MACOSX")
+    except:
+        print("Error: Failed to install the update")
+        exit()
+
+    print(f"Update to version {version} was successful")
+
+def getReleaseNotes():
+    choice = input("Would you like to view the release notes? (y/n) ")
+    if(not choice.lower() == "y"):
+        return
+    try:
+        info = json.loads(get(apiURL).text)
+    except:
+        print("Error: Unable to download release notes")
+        exit()
+
+    print(info["body"])
+
 # Reaches out to check and see if there are any
 # new versions of Server Connect. If so, it will
 # prompt the user if they would like to update.
 # If they do, the new version will be downloaded and
 # installed
 def upgrade():
-    try:
-        globalVersion = get("https://darkassassinsinc.com/software/server-connect/version.txt").text
-        if(globalVersion>version):
-            response = input("There is a new version available: version "+globalVersion+"\nWould you like to update? (y/n) ")
-            if(response.lower()=="y" or response.lower()=="yes"):
-                try:
-                    update = get("https://darkassassinsinc.com/software/server-connect/connect.py")
-                    open(path+"/connect.py", 'wb').write(update.content)
-                    if(platform.system() != "Windows"):
-                        os.system("sudo mv "+path+"/connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
-                    print("Update to version "+globalVersion+" was successful")
-                except:
-                    print("Error: Update failed")
+    latestVersion = getLatestRelease()
+    if(version >= latestVersion):
+        print("You are up to date!")
+        exit(0)
 
-            else:
-                print("Update not downloaded")
-        else:
-            print("You are up to date!")
-    except:
-        print("Error: Unable to check for updates at this time...")
+    print(f"Current Version: {version}")
+    print(f"Latest Version:  {latestVersion}")
+    print("A new version is available")
+
+    choice = input("Would you like to update? (y/n) ")
+    if(choice.lower() == "y"):
+        isWindows = platform.system() == "Windows"
+        updateServerConnect(latestVersion, isWindows)
+        getReleaseNotes()
+    else:
+        print("Update skipped")
 
 # Takes the list of arguments as input and then
 # parses them to construct an scp command to copy files
