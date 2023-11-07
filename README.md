@@ -1,10 +1,11 @@
 # Server Connect
-**Version:** 3.2.2<br />
+**Version:** 4.0<br />
 **Published Date:** 11/6/2023
 
 ## Table of Contents
 * [General Usage](#general-usage-notes)
 * [System Requirements](#system-requirements)
+* ['Building' from source](#building-from-source)
 * Installing Server Connect
     * [Windows](#windows-installation)
     * [macOS/Linux](#macoslinux-installation)
@@ -39,6 +40,10 @@ connect admin@10.34.79.123 "-v -p 43731"
 - As of version 3.2, this software also has support for connection names to
   include hyphens
   - Ex. `vpn-server`
+- As of version 4.0, this software now pulls updates directly from the 
+  GitHub releases page. All users on version 3.2.1 or earlier will either 
+  need to run the `upgrade` command to update to 3.2.2 before running 
+  another `upgrade` to upgrade to version 4.0
 
 ---------
 
@@ -51,6 +56,34 @@ System Requirements
   - Any version of Windows older than Windows 10, or any Windows 10 version
     older than version 1803, is not supported, due to Windows lack of SSH
     support on the command line.
+________
+
+'Building' From Source
+----------
+This is Python after all, so there is no building and compiling. However, 
+with Server Connect 4.0, it is no longer a single script. It has been 
+broken up into modules. For minimal changes to be needed to install and
+uninstall scripts, as well as the upgrade process, rather than having 
+the user run the `__main__.py` file, all of the source files will now 
+be joined together to form the `connect.py` that is now in the releases. 
+This file can be created by running the `buildServerConnect.py` script.
+
+To do this, simply clone this repo, cd into it, and run the build script.
+```bash
+./buildServerConnect.py
+# Or
+python3 buildServerConnect.py
+```
+
+The easiest way to install Server Connect from source is running the 
+`buildServerConnect.py` script with the `install` option.
+```bash
+python3 buildServerConnect.py install
+```
+
+This will build the `connect.py` file then install Server Connect 
+automatically for you.
+
 ________
 
 Windows Installation

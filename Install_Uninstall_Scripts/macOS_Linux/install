@@ -15,10 +15,19 @@ os.system("python3 -m pip install requests")
 # file copied successfully also makes sure ~/.ssh/ 
 # folder exists so you don't run into errors later
 homeDirSSH = os.path.expanduser("~/.ssh")
-os.system("sudo cp connect.py /usr/local/bin/connect && sudo chown -R $(whoami) /usr/local/bin/connect && chmod +x /usr/local/bin/connect")
+
+# Install Server Connect
+os.system("sudo cp connect.py /usr/local/bin/connect.py && "+
+    "sudo chown -R $(whoami) /usr/local/bin/connect.py")
+
+# Install the Server Connect script
+os.system("sudo cp connect.sh /usr/local/bin/connect && "+
+    "sudo chown -R $(whoami) /usr/local/bin/connect && "+
+    "chmod +x /usr/local/bin/connect")
 if(not os.path.isdir(homeDirSSH)):
     os.system("mkdir \""+homeDirSSH+"\"")
-if(os.path.isfile("/usr/local/bin/connect")):
+if(os.path.isfile("/usr/local/bin/connect") and 
+    os.path.isfile("/usr/local/bin/connect.py")):
     print("Install Complete")
 else:
     print("An error occured")
