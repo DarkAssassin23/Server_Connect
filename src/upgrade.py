@@ -52,6 +52,10 @@ def updateServerConnect(version, isWindows):
     try:
         os.chdir(baseFilename)
         if(isWindows):
+            if(os.path.isfile(f"{path}/connect.py")):
+                os.remove(f"{path}/connect.py")
+            if(os.path.isfile(f"{path}/connect.bat")):
+                os.remove(f"{path}/connect.bat")
             shutil.move("connect.py", f"{path}/")
             shutil.move("connect.bat", f"{path}/")
         else:
