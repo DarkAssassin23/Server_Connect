@@ -43,7 +43,7 @@ def updateServerConnect(version, isWindows):
 
     try:
         with zipfile.ZipFile(zipName, 'r') as zip_ref:
-            zip_ref.extractall()
+            zip_ref.extractall(baseFilename)
     except:
         print("Error: Failed to extract the update")
         exit()
