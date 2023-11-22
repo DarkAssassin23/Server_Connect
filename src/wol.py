@@ -176,8 +176,14 @@ def WOL(macAddress):
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST,1)
 
-    # Send magic packet
-    sock.sendto(magicPacket,(braodcastIP,wolPort))
+    try:
+        # Send magic packet
+        sock.sendto(magicPacket,(braodcastIP,wolPort))
 
-    # Close socket
-    sock.close()
+        # Close socket
+        sock.close()
+    except:
+        print("An error occured sending WOL packet. This can happen if you\n"
+            "are trying to send a WOL packet on a device connected via VPN")
+        exit()
+
