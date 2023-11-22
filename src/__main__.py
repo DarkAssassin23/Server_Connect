@@ -13,7 +13,7 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "4.0"
+version = "4.0.1"
 copyrightYear = "2023"
 connections = {}
 
