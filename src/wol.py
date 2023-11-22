@@ -85,7 +85,7 @@ def addMACAddress(connections, name, macaddr=""):
         while(len(connections[name])<3):
             connections[name].append("")
         connections[name][2] = macaddr
-        saveConnections()
+        fh.saveConnections(connections)
         print("MAC Address successfully added to the connection")
         exit()
     elif(not macaddr==""):
@@ -98,7 +98,7 @@ def addMACAddress(connections, name, macaddr=""):
         mac = input(f"Enter the MAC Address for the connection \'{name}\': ")
         if(validMACAddress(mac)):
             connections[name][2] = mac
-            saveConnections()
+            fh.saveConnections(connections)
             print("MAC Address successfully added to the connection")
             exit()
         else:
@@ -127,13 +127,13 @@ def getMACAddress(connections, name, prompt=False, quiet=False):
         if(not pingHost(ip)):
             if(prompt):
                 print("Unable to dynamically pull MAC Address.")
-                addMACAddress(name)
+                addMACAddress(connections, name)
         else:
             mac = getMAC(ip)
             if(mac == "N/A"):
                 if(prompt):
                     print("Unable to dynamically pull MAC Address. The given IP is not on the LAN.")
-                    addMACAddress(name)
+                    addMACAddress(connections, name)
             else:
                 connections[name][2] = mac
                 gotmac = True 
@@ -142,7 +142,7 @@ def getMACAddress(connections, name, prompt=False, quiet=False):
         gotmac = True
     
     if(gotmac):
-        saveConnections()
+        fh.saveConnections(connections)
         if(not quiet):
             print("MAC Address successfully added to the connection")
 
