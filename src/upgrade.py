@@ -46,6 +46,7 @@ def updateServerConnect(version, isWindows, upgrading = True):
             zip_ref.extractall(baseFilename)
     except:
         print("Error: Failed to extract the update")
+        os.remove(zipName)
         exit()
 
     if(upgrading):
@@ -136,7 +137,14 @@ def reinstall(version):
             updateServerConnect(latestVersion, isWindows)
             getReleaseNotes(apiURL + "/latest")
             return
-    
+
+    if(version > latestVersion):
+        print(f"Latest Version:  {latestVersion}")
+        print(f"Your Version:    {version}")
+        print("Error: It appears you are trying to reinstall an unreleased "
+              "version")
+        return
+
     choice = input("Are you sure you would like to reinstall Server Connect "
                    f"v{version}? (y/n) ")
     if(choice.lower() == "y"):
