@@ -18,6 +18,10 @@ version = "4.0.1"
 copyrightYear = "2023"
 connections = {}
 
+def tooManyArgs():
+    print("Error: Too many arguments given, type connect -h for help")
+    exit()
+
 def printInfo(full = False):
     print("Server Connect version "+version)
     if(full):
@@ -41,9 +45,6 @@ if __name__ == "__main__":
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
             update.deleteAll(connections)
             exit()
-        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
-            getCurrentReleaseNotes(version)
-            exit()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
             coninfo.listConnections(connections)
             exit()
@@ -55,6 +56,9 @@ if __name__ == "__main__":
             exit()
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
             upgrade(version)
+            exit()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+            getCurrentReleaseNotes(version)
             exit()
         elif("-" not in sys.argv[1]):
             connectToServer(sys.argv, connections)
@@ -126,8 +130,7 @@ if __name__ == "__main__":
             exit()
 
         elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
             print("Error: No user and domain given, type connect -h for help")
             exit()
@@ -135,29 +138,25 @@ if __name__ == "__main__":
             print("Error: No user and domain given, type connect -h for help")
             exit()
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="--version"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
             print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
             exit()
         elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
             print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
             exit()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
 
     if(len(sys.argv)==4):
         if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -201,32 +200,25 @@ if __name__ == "__main__":
             exit()
         
         elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="--version"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-wol"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
 
     if(len(sys.argv)==5):
         if(sys.argv[1]=="-u" or sys.argv[1]=="--update"):
@@ -239,51 +231,39 @@ if __name__ == "__main__":
             exit()
         
         elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-h" or sys.argv[1]=="--help"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-v" or sys.argv[1]=="--view"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="--version"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-i" or sys.argv[1]=="--info"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-um" or sys.argv[1]=="--update-mac"):
-            print("Error: Too many arguments given. Type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-wol"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-ping"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="-scp"):
             print("Error: Too many arguments given. Your command should look like \"[optionalFlags]\" \"file/to/send/ [name]:/path/on/server\" " +
                     "or \"[optionalFlags]\" \"[name]:/file/on/server location/on/local/machine\", type connect -h for help")
             exit()
         elif(sys.argv[1]=="-uu" or sys.argv[1]=="-uf" or sys.argv[1]=="-ui"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
         elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
-            print("Error: Too many arguments given, type connect -h for help")
-            exit()
+            tooManyArgs()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
     else:
         # A catch incase the connection has a '-' in it
         if(sys.argv[1] in connections):
