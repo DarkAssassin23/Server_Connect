@@ -4,7 +4,7 @@ import os, zipfile, shutil, platform, json
 import fileHandling as fh
 from fileHandling import path
 
-apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases/latest"
+apiURL = "https://api.github.com/repos/DarkAssassin23/Server_Connect/releases"
 baseDownloadURL = "https://github.com/DarkAssassin23/Server_Connect/releases/download/"
 baseFilename = "Server_Connect-"
 
@@ -12,7 +12,7 @@ baseFilename = "Server_Connect-"
 # GitHub API
 def getLatestRelease():
     try:
-        info = json.loads(get(apiURL).text)
+        info = json.loads(get(apiURL + "/latest").text)
     except:
         print("Error: Unable to check for updates at this time...")
         exit()
@@ -74,18 +74,37 @@ def updateServerConnect(version, isWindows):
 
     print(f"Update to version {version} was successful")
 
-# Prompt the user if they want to view the release notes, if so display them
-def getReleaseNotes():
-    choice = input("Would you like to view the release notes? (y/n) ")
-    if(not choice.lower() == "y"):
-        return
+## Prompt the user if they want to view the release notes, if so display them
+# @param url The API URL of the release to get the release notes of
+# @param prompt Should the user be prompted if they want to view the release 
+# notes
+def getReleaseNotes(url, prompt = True):
+    if(prompt):
+        choice = input("Would you like to view the release notes? (y/n) ")
+        if(not choice.lower() == "y"):
+            return
     try:
-        info = json.loads(get(apiURL).text)
+        info = json.loads(get(url).text)
     except:
         print("Error: Unable to download release notes")
         exit()
 
     print(info["body"])
+
+## Get the release notes for the version you have installed
+def getCurrentReleaseNotes(version):
+    try:
+        info = json.loads(get(apiURL).text)
+    except:
+        print("Error: Unable to query GitHub API at this time...")
+        exit()
+    for r in info:
+        ver = r["tag_name"].replace("v", "").strip()
+        if(ver == version):
+            getReleaseNotes(r["url"], False)
+            return
+    print(f"Error: The version \'{version}\' does not contain release notes. " 
+        "Does it exist?")
 
 # Reaches out to check and see if there are any
 # new versions of Server Connect. If so, it will
@@ -106,6 +125,6 @@ def upgrade(version):
     if(choice.lower() == "y"):
         isWindows = platform.system() == "Windows"
         updateServerConnect(latestVersion, isWindows)
-        getReleaseNotes()
+        getReleaseNotes(apiURL + "/latest")
     else:
         print("Update skipped")

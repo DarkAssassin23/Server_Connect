@@ -4,6 +4,7 @@ from help import printHelp
 from scp import scp
 from connectToServer import connectToServer
 from upgrade import upgrade
+from upgrade import getCurrentReleaseNotes
 import updateConnections as update
 import connectionInfo as coninfo
 import wol, platform, sys
@@ -39,6 +40,9 @@ if __name__ == "__main__":
             exit()
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
             update.deleteAll(connections)
+            exit()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+            getCurrentReleaseNotes(version)
             exit()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
             coninfo.listConnections(connections)

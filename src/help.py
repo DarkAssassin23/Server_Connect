@@ -73,6 +73,10 @@ ssh connections. Below is a list of the supported commands and functionality
                              such as version number and copyright information
                              Ex. connect -i
 
+    -R,--release-notes       Shows the release notes for the current version
+                             of Server Connect you are running
+                             Ex. connect -R
+
     --version                Shows what version of Server Connect you're
                              running
                              Ex. connect --version
