@@ -72,7 +72,7 @@ ssh connections. Below is a list of the supported commands and functionality
     -R,--reinstall           Reinstall the current version of Server Connect.
                              If a new version is available, you will be asked
                              if you would rather upgrade instead
-                             ex. connect -R
+                             Ex. connect -R
 
     -i,--info                Prints out information about Server Connect
                              such as version number and copyright information
