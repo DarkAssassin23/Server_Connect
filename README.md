@@ -17,8 +17,7 @@
     * [Windows](#windows-uninstall)
     * [macOS/Linux](#macoslinux-uninstall)
 
-GENERAL USAGE NOTES
-----------------------
+## GENERAL USAGE NOTES
 - This software is equipped with a CLI to manage all your ssh connections
   for you and access them anywhere on your system without needing to
   constantly maintain a config file for it
@@ -46,10 +45,7 @@ connect admin@10.34.79.123 "-v -p 43731"
   another `upgrade` to upgrade to latest version, or install latest version 
   via the install script.
 
----------
-
-System Requirements
-----------
+## System Requirements
 - Python3
 - Pip3
 - **Additional Requirements (Windows 10 Users Only)**
@@ -57,19 +53,17 @@ System Requirements
   - Any version of Windows older than Windows 10, or any Windows 10 version
     older than version 1803, is not supported, due to Windows lack of SSH
     support on the command line.
-________
 
-'Building' From Source
-----------
+## 'Building' From Source
 This is Python after all, so there is no building and compiling. However, 
 with Server Connect 4.0, it is no longer a single script. It has been 
 broken up into modules. For minimal changes to be needed to install and
 uninstall scripts, as well as the upgrade process, rather than having 
 the user run the `__main__.py` file, all of the source files will now 
-be joined together to form the `connect.py` that is now in the releases. 
+be joined together to form the `connect.py` file that is now in the releases. 
 This file can be created by running the `buildServerConnect.py` script.
 
-To do this, simply clone this repo, cd into it, and run the build script.
+To do this, clone this repo, `cd` into it, and run the build script.
 ```bash
 ./buildServerConnect.py
 # Or
@@ -85,10 +79,7 @@ python3 buildServerConnect.py install
 This will build the `connect.py` file then install Server Connect 
 automatically for you.
 
-________
-
-Windows Installation
-----------
+## Windows Installation
 As of version 2.0 the Windows installation has been
 streamlined. Simply download the Windows release from the releases tab and
 run the `install.bat` file and you will be good to go.
@@ -112,22 +103,14 @@ If you ran the `install.bat` file as an administrator, however,
 you are good to go. Just close out of any open command prompt windows
 (if applicable) for their environment variables to reset.
 
-______
-
-macOS/Linux Installation
-------------------------
-
+## macOS/Linux Installation
 To install Server Connect on macOS/Linux, download the macOS/Linux version
 from the releases tab and run the install script
 ```bash
 ./install
 ```
 
-------------------------
-
-Utilizing Server Connect
-----------------------
-
+## Utilizing Server Connect
 Once the installation is complete, to get help on all of the commands and
 what they do type
 ```bash
@@ -239,11 +222,8 @@ ssh connecitons. Below is a list of the supported commands and functionality
                         Ex. connect -wol plex_server
 ```
 This is a list of all the current supported commands and their functionality
-________
 
-Utilizing SSH flags with Server Connect
-----------------------
-
+## Utilizing SSH flags with Server Connect
 As of Server Connect version 2.0, Server Connect now has support for
 utilizing SSH flags for your connections. You have two choices on how you
 want to use SSH flags. You can either tack them on when connecting as a
@@ -262,11 +242,8 @@ connect -u webServer web@10.1.1.200 "-p 4523 -v"
 ```
 Regardless of how you use them, make sure any flags you tack on come last
 and are in either single or double quotes. Otherwise, it will not work
-__________
 
-Utilizing SCP with Server Connect
-----------------------
-
+## Utilizing SCP with Server Connect
 As of Server Connect version 2.0, Server Connect now has support for
 utilizing your existing connections for ssh to be used for scp. Any flags,
 such as port number, identity files etc. will automaticly be used when
@@ -295,13 +272,11 @@ either single or double quotes, and must go before, and be seprate from,
 the quotes surrounding the file you want to copy and the destination you
 want to copy to. Otherwise, it will not work.
 
-__________
-
-Utilizing Wake-on-LAN with Server Connect
-------
+## Utilizing Wake-on-LAN with Server Connect
 As of Server Connect version 3.0, Server Connect now has support for
 sending Wake-on-LAN magic packets to your connections.
-## Prerequisites
+
+### Prerequisites
 In order to be able to utilize this feature, you first need to ensure
 that your connection you wish to use this functionality with has a
 MAC address associated with it. As seen in the
@@ -327,7 +302,7 @@ connect -um [nameOfConnection] 00:11:22:33:44:55
 Where <code>00:11:22:33:44:55</code> would be substituted with the
 actual MAC address of the system.
 
-## Using Wake-on-LAN
+### Using Wake-on-LAN
 Once you have a MAC address associated with your connection, as seen
 in the [Utilizing Server Connect](#utilizing-server-connect)
 section, you can send a Wake-on-LAN signal to your connection with
@@ -340,18 +315,12 @@ begin booting
 
 1. Wake-on-LAN is supported by the physical device and is turned on
 2. The physical device is on your LAN
-_________
 
-Windows Uninstall
-----------
+## Windows Uninstall
 To uninstall Server Connect on Windows run the `uninstall.bat` file as
 Administrator.
 
-______
-
-macOS/Linux Uninstall
-------------------------
-
+## macOS/Linux Uninstall
 To uninstall Server Connect on macOS/Linux run the uninstall script
 ```bash
 ./uninstall
