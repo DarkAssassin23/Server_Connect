@@ -3,7 +3,7 @@
 **Published Date:** 4/5/2024
 
 ## Table of Contents
-* [General Usage](#general-usage-notes)
+* [About](#about)
 * [System Requirements](#system-requirements)
 * ['Building' from source](#building-from-source)
 * Installing Server Connect
@@ -17,7 +17,7 @@
     * [Windows](#windows-uninstall)
     * [macOS/Linux](#macoslinux-uninstall)
 
-## GENERAL USAGE NOTES
+## About
 - This software is equipped with a CLI to manage all your ssh connections
   for you and access them anywhere on your system without needing to
   constantly maintain a config file for it
