@@ -19,8 +19,8 @@ def getLatestRelease():
     latest = info["tag_name"].replace("v", "").strip()
     return latest
 
-# Download the latest version, extract it, and install it
-def updateServerConnect(version, isWindows):
+# Download the selected version, extract it, and install it
+def updateServerConnect(version, isWindows, upgrading = True):
     global baseFilename
     if(isWindows):
         baseFilename += "Windows"
@@ -48,7 +48,11 @@ def updateServerConnect(version, isWindows):
         print("Error: Failed to extract the update")
         exit()
 
-    print("Installing new version")
+    if(upgrading):
+        print("Installing new version")
+    else:
+        print(f"Reinstalling v{version}")
+
     try:
         os.chdir(baseFilename)
         if(isWindows):
@@ -72,7 +76,11 @@ def updateServerConnect(version, isWindows):
         print("Error: Failed to install the update")
         exit()
 
-    print(f"Update to version {version} was successful")
+    if(upgrading):
+        print(f"Update to ", end="")
+    else:
+        print("Reinstall of ", end="")
+    print(f"version {version} was successful")
 
 ## Prompt the user if they want to view the release notes, if so display them
 # @param url The API URL of the release to get the release notes of
@@ -92,7 +100,10 @@ def getReleaseNotes(url, prompt = True):
     print(info["body"])
 
 ## Get the release notes for the version you have installed
-def getCurrentReleaseNotes(version):
+# @param version Current version of Server Connect
+# @param prompt Should the user be prompted if they want to view the release 
+# notes
+def getCurrentReleaseNotes(version, prompt = False):
     try:
         info = json.loads(get(apiURL).text)
     except:
@@ -101,10 +112,38 @@ def getCurrentReleaseNotes(version):
     for r in info:
         ver = r["tag_name"].replace("v", "").strip()
         if(ver == version):
-            getReleaseNotes(r["url"], False)
+            getReleaseNotes(r["url"], prompt)
             return
     print(f"Error: The version \'{version}\' does not contain release notes. " 
         "Does it exist?")
+
+## Reinstall the current version of Server Connect
+# @param version The current version of Server Connect installed
+# @note If a new version is available the user will be prompted if they want
+# to upgrade
+def reinstall(version):
+    latestVersion = getLatestRelease()
+    if(version < latestVersion):
+        print(f"Current Version: {version}")
+        print(f"Latest Version:  {latestVersion}")
+        print("A new version is available")
+
+        choice = input("Would you like to update instead? (y/n) ")
+        if(choice.lower() == "y"):
+            isWindows = platform.system() == "Windows"
+            updateServerConnect(latestVersion, isWindows)
+            getReleaseNotes(apiURL + "/latest")
+            return
+    
+    choice = input("Are you sure you would like to reinstall Server Connect "
+                   f"v{version}? (y/n) ")
+    if(choice.lower() == "y"):
+        isWindows = platform.system() == "Windows"
+        updateServerConnect(version, isWindows, False)
+        getCurrentReleaseNotes(version, True)
+        return
+    else:
+        print("Reinstall skipped")
 
 # Reaches out to check and see if there are any
 # new versions of Server Connect. If so, it will

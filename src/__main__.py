@@ -5,6 +5,7 @@ from scp import scp
 from connectToServer import connectToServer
 from upgrade import upgrade
 from upgrade import getCurrentReleaseNotes
+from upgrade import reinstall
 import updateConnections as update
 import connectionInfo as coninfo
 import wol, platform, sys
@@ -57,7 +58,10 @@ if __name__ == "__main__":
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
             upgrade(version)
             exit()
-        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--reinstall"):
+            reinstall(version)
+            exit()
+        elif(sys.argv[1]=="-rn" or sys.argv[1]=="--release-notes"):
             getCurrentReleaseNotes(version)
             exit()
         elif("-" not in sys.argv[1]):
@@ -155,7 +159,9 @@ if __name__ == "__main__":
         elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
             print("Error: No name or user, domain, or flags were provided. Type connect -h for help")
             exit()
-        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+        elif(sys.argv[1]=="-rn" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--Reinstall"):
             tooManyArgs()
 
     if(len(sys.argv)==4):
@@ -217,7 +223,9 @@ if __name__ == "__main__":
             tooManyArgs()
         elif(sys.argv[1]=="-wol"):
             tooManyArgs()
-        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+        elif(sys.argv[1]=="-rn" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--Reinstall"):
             tooManyArgs()
 
     if(len(sys.argv)==5):
@@ -262,7 +270,9 @@ if __name__ == "__main__":
             tooManyArgs()
         elif(sys.argv[1]=="--update-user" or sys.argv[1]=="--update-flags" or sys.argv[1]=="--update-ipdomain"):
             tooManyArgs()
-        elif(sys.argv[1]=="-R" or sys.argv[1]=="--release-notes"):
+        elif(sys.argv[1]=="-rn" or sys.argv[1]=="--release-notes"):
+            tooManyArgs()
+        elif(sys.argv[1]=="-R" or sys.argv[1]=="--Reinstall"):
             tooManyArgs()
     else:
         # A catch incase the connection has a '-' in it

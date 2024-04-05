@@ -204,13 +204,18 @@ ssh connecitons. Below is a list of the supported commands and functionality
                         and will automatically update for you
                         Ex. connect -U
 
+-R,--reinstall          Reinstall the current version of Server Connect.
+                        If a new version is available, you will be asked
+                        if you would rather upgrade instead
+                        ex. connect -R
+
 -i,--info               Prints out information about Server Connect
                         such as version number and copyright information
                         Ex. connect -i
 
--R,--release-notes      Shows the release notes for the current version
+-rn,--release-notes     Shows the release notes for the current version
                         of Server Connect you are running
-                        Ex. connect -R
+                        Ex. connect -rn
 
 --version               Shows what version of Server Connect you're
                         running
