@@ -44,6 +44,8 @@ connect admin@10.34.79.123 "-v -p 43731"
   need to run the `upgrade` command to update to 3.2.2 before running 
   another `upgrade` to upgrade to latest version, or install latest version 
   via the install script.
+- As of version 4.1, this software now allows you to view the release notes
+  at anytime. It also allows you to reinstall server connect from the CLI
 
 ## System Requirements
 - Python3
@@ -120,7 +122,7 @@ or
 ```bash
 connect --help
 ```
-This will display the follwing man page style menu
+This will display the following man page style menu
 ```
 Server Connect allows you to easily connect to and manage all your
 ssh connecitons. Below is a list of the supported commands and functionality
@@ -191,7 +193,7 @@ ssh connecitons. Below is a list of the supported commands and functionality
 -R,--reinstall          Reinstall the current version of Server Connect.
                         If a new version is available, you will be asked
                         if you would rather upgrade instead
-                        ex. connect -R
+                        Ex. connect -R
 
 -i,--info               Prints out information about Server Connect
                         such as version number and copyright information
