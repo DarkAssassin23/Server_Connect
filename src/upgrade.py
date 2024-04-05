@@ -90,6 +90,8 @@ def getReleaseNotes(url, prompt = True):
     if(prompt):
         choice = input("Would you like to view the release notes? (y/n) ")
         if(not choice.lower() == "y"):
+            print("Release notes can be viewed anytime by running: "
+                  "connect -rn")
             return
     try:
         info = json.loads(get(url).text)
