@@ -2,6 +2,7 @@
 import os
 import fileHandling as fh
 from fileHandling import path
+from wol import getMACAddress
 
 # Sets the directory of connect.py
 #path = fh.path# os.path.expanduser("~")+"/.ssh"
@@ -30,7 +31,7 @@ def update(connections, name, userAdomain, additionalFlags = ""):
         connections[name] = [userAdomain, additionalFlags]
         fh.saveConnections(connections)
         print("Connection successfully added")
-    getMACAddress(name, False, True)
+    getMACAddress(connections, name, False, True)
     
 
 # Given the name of the connection and a given flag
@@ -51,7 +52,7 @@ def updatePartial(connection, name, flag, sectionToUpdate):
 
         fh.saveConnections(connections)
         print("Connection successfully updated")
-        getMACAddress(name, False, True)
+        getMACAddress(connections, name, False, True)
     else:
         print("Error: That connection name does not exist in your list of connections")
 
