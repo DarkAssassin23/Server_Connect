@@ -51,20 +51,20 @@ def loadConnections(connections):
 def saveConnections(connections):
     global deprecatedFile
     global connectionsFile
-    # try:
-    if(deprecatedFile):
-        connectionsFile = connectionsFile[:len(connectionsFile)-4]+".dat"
-    with open(connectionsFile+".tmp","w") as file:
-        for key,val in sorted(connections.items()):
-            # Legacy support for old connections.txt files
-            while(len(val)<3):
-                val.append("")
+    try:
+        if(deprecatedFile):
+            connectionsFile = connectionsFile[:len(connectionsFile)-4]+".dat"
+        with open(connectionsFile+".tmp","w") as file:
+            for key,val in sorted(connections.items()):
+                # Legacy support for old connections.txt files
+                while(len(val)<3):
+                    val.append("")
 
-            file.write(key+"\0"+val[0]+"\0"+val[1]+"\0"+val[2]+"\n")
-    shutil.move(connectionsFile+".tmp", connectionsFile)
-    # except:
-    #     print("An error occured saving your connections.\nAborting...")
-    #     exit()
+                file.write(key+"\0"+val[0]+"\0"+val[1]+"\0"+val[2]+"\n")
+        shutil.move(connectionsFile+".tmp", connectionsFile)
+    except:
+        print("An error occured saving your connections.\nAborting...")
+        exit()
     if(deprecatedFile):
         print("Your connections were read in from an older format with a deprecated filetype.\n"+
             "Your connections have been automatically updated to the new standard and new\nfile format. "+
