@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 4.1<br />
-**Published Date:** 4/5/2024
+**Version:** 4.1.1<br />
+**Published Date:** 5/12/2024
 
 ## Table of Contents
 * [About](#about)
