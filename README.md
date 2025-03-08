@@ -1,6 +1,6 @@
 # Server Connect
-**Version:** 4.1.1<br />
-**Published Date:** 5/12/2024
+**Version:** 4.2<br />
+**Published Date:** 3/8/2025
 
 ## Table of Contents
 * [About](#about)
@@ -46,6 +46,8 @@ connect admin@10.34.79.123 "-v -p 43731"
   via the install script.
 - As of version 4.1, this software now allows you to view the release notes
   at anytime. It also allows you to reinstall server connect from the CLI
+- As of version 4.2, this software now allows you to remove SSH fingerprints
+  upon deletion of a connection
 
 ## System Requirements
 - Python3
