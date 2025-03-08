@@ -15,8 +15,8 @@ if(platform.system() == "Windows"):
 else:
     import readline
 
-version = "4.1.1"
-copyrightYear = "2024"
+version = "4.2"
+copyrightYear = "2025"
 connections = {}
 
 def tooManyArgs():
