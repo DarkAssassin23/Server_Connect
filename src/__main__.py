@@ -44,7 +44,10 @@ if __name__ == "__main__":
             coninfo.viewConnections(connections)
             exit()
         elif(sys.argv[1]=="-D" or sys.argv[1]=="--delete-all"):
-            update.deleteAll(connections)
+            try:
+                update.deleteAll(connections)
+            except KeyboardInterrupt:
+                print("\nExiting...")
             exit()
         elif(sys.argv[1]=="-l" or sys.argv[1]=="--list"):
             coninfo.listConnections(connections)
@@ -56,10 +59,17 @@ if __name__ == "__main__":
             printInfo(True)
             exit()
         elif(sys.argv[1]=="-U" or sys.argv[1]=="--upgrade"):
-            upgrade(version)
+            try:
+                upgrade(version)
+            except KeyboardInterrupt:
+                print("\nExiting...")
+
             exit()
         elif(sys.argv[1]=="-R" or sys.argv[1]=="--reinstall"):
-            reinstall(version)
+            try:
+                reinstall(version)
+            except KeyboardInterrupt:
+                print("\nExiting...")
             exit()
         elif(sys.argv[1]=="-rn" or sys.argv[1]=="--release-notes"):
             getCurrentReleaseNotes(version)
@@ -102,8 +112,11 @@ if __name__ == "__main__":
             
     if(len(sys.argv)==3):
         if(sys.argv[1]=="-d" or sys.argv[1]=="--delete"):
-            update.delete(connections,sys.argv[2])
-            fh.saveConnections(connections)
+            try:
+                update.delete(connections,sys.argv[2])
+                fh.saveConnections(connections)
+            except KeyboardInterrupt:
+                print("\nDelete aborted. Connections were not deleted")
             exit()
         elif(sys.argv[1]=="-scp"):
             scp(connections,sys.argv)
@@ -174,8 +187,11 @@ if __name__ == "__main__":
             fh.saveConnections(connections)
             exit()
         elif(sys.argv[1]=="-r" or sys.argv[1]=="--rename"):
-            update.rename(connections, sys.argv[2],sys.argv[3])
-            fh.saveConnections(connections)
+            try:
+                update.rename(connections, sys.argv[2],sys.argv[3])
+                fh.saveConnections(connections)
+            except KeyboardInterrupt:
+                print("\nExiting...")
             exit()
         elif(sys.argv[1]=="-scp"):
             scp(connections, sys.argv)
