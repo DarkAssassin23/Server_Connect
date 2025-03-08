@@ -56,12 +56,21 @@ def updatePartial(connection, name, flag, sectionToUpdate):
     else:
         print("Error: That connection name does not exist in your list of connections")
 
+## Remove SSH finger prints for the given connection
+#  @param ip The ip address to remove the fingerprints of
+def removeFingerprints(ip):
+    os.system(f"ssh-keygen -R {ip}")
+
 # If the connection exists, it deletes it
 def delete(connections, name):
     if(name in connections):
+        ip = connections[name][0].split("@")[1]
         validate = input("Are you sure you would like to delete the conneciton "+name+" (y/n)? ")
         if(validate.lower()=="y" or validate.lower()=="yes"):
             del connections[name]
+            validate = input("Would you also like to remove the SSH fingerprint for "+name+" (y/n)? ")
+            if(validate.lower()=="y" or validate.lower()=="yes"):
+                removeFingerprints(ip)
             print("Connection deleted successfully")
         elif(validate.lower()=="n" or validate.lower()=="no"):
             print("Connection was not deleted")
@@ -78,7 +87,20 @@ def deleteAll(connections):
         validate = input("Are you sure you would like to delete all your connections (y/n)? ")
         if(validate.lower()=="y" or validate.lower()=="yes"):
             os.system("rm "+path+"/connections.dat")
-            print("Connections deleted")
+            print("Connections file deleted")
+            validate = input("Would you also like to remove the all the SSH fingerprints (y/n)? ")
+            if(validate.lower()=="y" or validate.lower()=="yes"):
+                for name in connections:
+                    ip = connections[name][0].split("@")[1]
+                    removeFingerprints(ip)
+            elif(validate.lower()=="n" or validate.lower()=="no"):
+                validate = input("Would you like to remove any of the SSH fingerprints (y/n)? ")
+                if(validate.lower()=="y" or validate.lower()=="yes"):
+                    for name in connections:
+                        ip = connections[name][0].split("@")[1]
+                        validate = input("Would you also like to remove the SSH fingerprint for "+name+" (y/n)? ")
+                        if(validate.lower()=="y" or validate.lower()=="yes"):
+                            removeFingerprints(ip)
         elif(validate.lower()=="n" or validate.lower()=="no"):
             print("Connections were not deleted")
         else:
